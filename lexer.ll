@@ -1,5 +1,6 @@
 %{
 //extern "C" int yylex();
+#include "parser.tab.hh"
 %}
 
 litteral -?[0-9]+
@@ -7,55 +8,55 @@ variable [a-z]+([a-z]+|_)*
 
 %%
 
-BAISSER         { printf("baisser"); }
-LEVER           { printf("lever"); }
-CHANGER_COULEUR { printf("changer_couleur"); }
+BAISSER         { return DOWN; }
+LEVER           { return UP; }
+CHANGER_COULEUR { return CHANGEGOL; }
 
-TOURNER         { printf("tourner"); }
-AVANCER         { printf("avancer"); }
+TOURNER         { return ROTATE; }
+AVANCER         { return FORWARD; }
 
-POUR            { printf("pour"); }
-ALLANT_A        { printf("allant_a"); }
-FIN_POUR        { printf("fin_pour"); }
+POUR            { return FOR; }
+ALLANT_A        { return TO; }
+FIN_POUR        { return ENDFOR; }
 
-TANT_QUE        { printf("tant_que"); }
-FIN_TANT_QUE    { printf("fin_tant_que"); }
+TANT_QUE        { return WHILE; }
+FIN_TANT_QUE    { return ENDWHILE; }
 
-SI              { printf("si"); }
-SINON           {}
-FIN_SI          { printf("fin_si"); }
+SI              { return IF; }
+SINON           { return ELSE; }
+FIN_SI          { return ENDIF; }
 
-FAIRE           { }
+FAIRE           { return DO; }
 
-LIGNE           { printf("ligne"); }
-RECTANGLE       { printf("rectangle"); }
+LIGNE           { return LINE; }
+RECTANGLE       { return RECTANGLE; }
 
-SUP_A           {}
-SUP_EGAL_A      {}
-INF_A           {}
-INF_EGAL_A      {}
-EGAL_A          {}
+SUP_A           { return GT;}
+SUP_EGAL_A      { return GEQ; }
+INF_A           { return LT; }
+INF_EGAL_A      { return LEQ; }
+EGAL_A          { return EQ; }
 
-NOIR            { printf("(0, 0, 0)"); }
-BLANC           { printf("(255, 255, 255)"); }
-ROUGE           { printf("(255, 0, 0)"); }
-VERT            { printf("(0, 255, 255)"); }
-BLEU { }
-JAUNE { }
-VIOLET { }
-MARRON { }
+NOIR            { return BLACK; }
+BLANC           { return WHITE; }
+ROUGE           { return RED; }
+VERT            { return GREEN; }
+BLEU            { return BLUE; }
+JAUNE           { return YELLOW; }
+VIOLET          { return PURPLE; }
+MARRON          { return BROWN; }
 
 
-{litteral}      { printf("lit{%s}", yytext); }
-{variable}      { printf("var{%s}", yytext); }
+{litteral}      { yyval.cst = atof(yytext); return CONSTANT; }
+{variable}      { yyval.var = strdup(yytext); return VARIABLE; }
 
-"+"             { printf("plus"); }
-"-"             { printf("moins"); }
-"<"             { printf("affectation"); }
-";"             { printf("fin_ligne"); }
+"+"             { return PLUS; }
+"-"             { return MINUS; }
+"<"             { return AFFECT; }
+";"             { return ENDLINE; }
 
-#               { printf("commentaire"); }
-###             { printf("commentaire_multiligne"); }
+#               { return COMMENT; }
+###             { return MULTCOMMENT; }
 
 %%
 
