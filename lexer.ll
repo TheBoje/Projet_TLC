@@ -3,6 +3,8 @@
 #include "parser.tab.hh"
 %}
 
+%start comment
+
 litteral -?[0-9]+
 variable [a-z]+([a-z]+|_)*
 
@@ -59,8 +61,8 @@ MARRON          { return BROWN; }
 "<"             { return AFFECT; }
 ";"             { return ENDLINE; }
 
-#               { return COMMENT; }
-###             { return MULTCOMMENT; }
+#.*"\n"         { return COMMENT; }
+###.*###"\n"    { return MULTCOMMENT; }
 
 %%
 

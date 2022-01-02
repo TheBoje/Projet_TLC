@@ -17,7 +17,7 @@ void yyerror(const char *s) { std::cerr << "ERREUR : " << s << std::endl; }
 %token LINE RECTANGLE
 %token GT GEQ LT LEQ EQ AND OR
 %token BLACK WHITE RED GREEN BLUE YELLOW PURPLE BROWN
-%token AFFECT PLUS MINUS TIMES DIVIDE ENDLINE
+%token AFFECT PLUS MINUS TIMES DIVIDE ENDLINE NEWLINE
 %token COMMENT MULTCOMMENT
 %token <cst> CONSTANT
 %token <var> VARIABLE
@@ -28,6 +28,8 @@ void yyerror(const char *s) { std::cerr << "ERREUR : " << s << std::endl; }
 
 prog: line prog {}
 | line {}
+| comment prog {}
+| comment {}
 ;
 
 color: BLACK {}
@@ -85,6 +87,12 @@ instr: DOWN {}
 | control_struct {}
 ;
 
+text: . {}
+;
+
+comment: COMMENT {}
+| MULTCOMMENT {}
+;
 
 line: instr ENDLINE {}
 ;
