@@ -36,6 +36,8 @@ SUP_EGAL_A      { return GEQ; }
 INF_A           { return LT; }
 INF_EGAL_A      { return LEQ; }
 EGAL_A          { return EQ; }
+ET              { return AND; }
+OU              { return OR; }
 
 NOIR            { return BLACK; }
 BLANC           { return WHITE; }
@@ -52,6 +54,8 @@ MARRON          { return BROWN; }
 
 "+"             { return PLUS; }
 "-"             { return MINUS; }
+"*"             { return TIMES; }
+"/"             { return DIVIDE; }
 "<"             { return AFFECT; }
 ";"             { return ENDLINE; }
 
