@@ -1,6 +1,6 @@
 %{
-//extern "C" int yylex();
 #include "parser.tab.hh"
+extern "C" int yylex();
 %}
 
 %start comment
@@ -12,7 +12,7 @@ variable [a-z]+([a-z]+|_)*
 
 BAISSER         { return DOWN; }
 LEVER           { return UP; }
-CHANGER_COULEUR { return CHANGEGOL; }
+CHANGER_COULEUR { return CHANGECOL; }
 
 TOURNER         { return ROTATE; }
 AVANCER         { return FORWARD; }
@@ -51,8 +51,8 @@ VIOLET          { return PURPLE; }
 MARRON          { return BROWN; }
 
 
-{litteral}      { yyval.cst = atof(yytext); return CONSTANT; }
-{variable}      { yyval.var = strdup(yytext); return VARIABLE; }
+{litteral}      { yylval.cst = atof(yytext); return CONSTANT; }
+{variable}      { strcpy(yylval.var, yytext); return VARIABLE; }
 
 "+"             { return PLUS; }
 "-"             { return MINUS; }
@@ -61,12 +61,7 @@ MARRON          { return BROWN; }
 "<"             { return AFFECT; }
 ";"             { return ENDLINE; }
 
-#.*"\n"         { return COMMENT; }
-###.*###"\n"    { return MULTCOMMENT; }
+"#.*\n"         { return COMMENT; }
+"###.*###\n"    { return MULTCOMMENT; }
 
 %%
-
-int main() {
-    int res = yylex();
-    return res;
-}

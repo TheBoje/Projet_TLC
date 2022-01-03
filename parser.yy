@@ -87,9 +87,6 @@ instr: DOWN {}
 | control_struct {}
 ;
 
-text: . {}
-;
-
 comment: COMMENT {}
 | MULTCOMMENT {}
 ;

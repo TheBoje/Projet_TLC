@@ -1,6 +1,8 @@
 #include <iostream>
+#include "parser.tab.hh"
 
-int main(int argc, char **argv) {
-	std::cout << "Hello, World!" << std::endl;
-	return EXIT_SUCCESS;
+int main() {
+    int res = yyparse();
+    printf("Res: %d\n", res);
+    return EXIT_SUCCESS;
 }
