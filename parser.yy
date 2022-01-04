@@ -18,6 +18,7 @@ void yyerror(const char *s) { std::cerr << "ERREUR : " << s << std::endl; }
 %token GT GEQ LT LEQ EQ AND OR
 %token BLACK WHITE RED GREEN BLUE YELLOW PURPLE BROWN
 %token AFFECT PLUS MINUS TIMES DIVIDE ENDLINE
+%token LPAR RPAR
 %token <cst> CONSTANT
 %token <var> VARIABLE
 
@@ -50,6 +51,7 @@ expr: CONSTANT      { std::cout << "constant"; }
 | expr TIMES expr   { std::cout << "*"; }
 | expr MINUS expr   { std::cout << "-"; }
 | expr DIVIDE expr  { std::cout << "/"; }
+| LPAR expr RPAR    { std::cout << "PAR"; } 
 ;
 
 cond: expr GT expr  { std::cout << ">"; }

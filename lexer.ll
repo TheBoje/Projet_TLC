@@ -55,6 +55,9 @@ MARRON          { return BROWN; }
 "/"             { return DIVIDE; }
 ";"             { return ENDLINE; }
 
+"("             { return LPAR; }
+")"             { return RPAR; }
+
 ">"             { return GT;}
 ">="            { return GEQ; }
 "<"             { return LT; }
