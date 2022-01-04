@@ -3,8 +3,6 @@
 extern "C" int yylex();
 %}
 
-%start comment
-
 litteral -?[0-9]+
 variable [a-z]+([a-z]+|_)*
 
@@ -52,7 +50,7 @@ MARRON          { return BROWN; }
 
 
 {litteral}      { yylval.cst = atof(yytext); return CONSTANT; }
-{variable}      { strcpy(yylval.var, yytext); return VARIABLE; }
+{variable}      { yylval.var = strdup(yytext); return VARIABLE; }
 
 "+"             { return PLUS; }
 "-"             { return MINUS; }
@@ -61,7 +59,9 @@ MARRON          { return BROWN; }
 "<"             { return AFFECT; }
 ";"             { return ENDLINE; }
 
-"#.*\n"         { return COMMENT; }
-"###.*###\n"    { return MULTCOMMENT; }
+"#.*\n"         {}
+"###.*###\n"    {}
+
+[ \n\t]         {}
 
 %%

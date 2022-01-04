@@ -17,8 +17,7 @@ void yyerror(const char *s) { std::cerr << "ERREUR : " << s << std::endl; }
 %token LINE RECTANGLE
 %token GT GEQ LT LEQ EQ AND OR
 %token BLACK WHITE RED GREEN BLUE YELLOW PURPLE BROWN
-%token AFFECT PLUS MINUS TIMES DIVIDE ENDLINE NEWLINE
-%token COMMENT MULTCOMMENT
+%token AFFECT PLUS MINUS TIMES DIVIDE ENDLINE
 %token <cst> CONSTANT
 %token <var> VARIABLE
 
@@ -26,52 +25,53 @@ void yyerror(const char *s) { std::cerr << "ERREUR : " << s << std::endl; }
 
 %%
 
-prog: line prog {}
-| line {}
-| comment prog {}
-| comment {}
+prog: seq { std::cout << "Entering prog" << std::endl; }
 ;
 
-color: BLACK {}
-| WHITE {}
-| RED {}
-| GREEN {}
-| BLUE {}
-| YELLOW {}
-| PURPLE {}
-| BROWN {}
-| CONSTANT CONSTANT CONSTANT {}
+seq: seq line { }
+| {}
+;
+
+color: BLACK    { std::cout << "C.BLACK"; }
+| WHITE         { std::cout << "C.WHITE"; }
+| RED           { std::cout << "C.RED"; }
+| GREEN         { std::cout << "C.GREEN"; }
+| BLUE          { std::cout << "C.BLUE"; }
+| YELLOW        { std::cout << "C.YELLOW"; }
+| PURPLE        { std::cout << "C.PURPLE"; }
+| BROWN         { std::cout << "C.BROWN"; }
+| CONSTANT CONSTANT CONSTANT { std::cout << "C.CUSTOM"; }
 ;
 
 
-expr: CONSTANT {}
-| VARIABLE {}
-| expr PLUS expr {}
-| expr TIMES expr {}
-| expr MINUS expr {}
-| expr DIVIDE expr {}
+expr: CONSTANT      { std::cout << "constant"; }
+| VARIABLE          { std::cout << "var"; }
+| expr PLUS expr    { std::cout << "+"; }
+| expr TIMES expr   { std::cout << "*"; }
+| expr MINUS expr   { std::cout << "-"; }
+| expr DIVIDE expr  { std::cout << "/"; }
 ;
 
-cond: expr GT expr {}
-| expr GEQ expr {}
-| expr LT expr {}
-| expr LEQ expr {}
-| expr EQ expr {}
-| cond AND cond {}
-| cond OR cond {}
+cond: expr GT expr  { std::cout << ">"; }
+| expr GEQ expr     { std::cout << ">="; }
+| expr LT expr      { std::cout << "<"; }
+| expr LEQ expr     { std::cout << "<="; }
+| expr EQ expr      { std::cout << "="; }
+| cond AND cond     { std::cout << "&&"; }
+| cond OR cond      { std::cout << "||"; }
 ;
 
-affectation: VARIABLE AFFECT expr {}
+affectation: VARIABLE AFFECT expr { std::cout << "var="; }
 ;
 
-conditional: IF cond DO prog ENDIF {}
-| IF cond DO prog ELSE DO prog ENDIF {}
+conditional: IF cond DO seq ENDIF { std::cout << "IF"; }
+| IF cond DO seq ELSE DO seq ENDIF { std::cout << "IFELSE"; }
 ;
 
-for_loop: FOR VARIABLE TO expr DO prog ENDFOR {}
+for_loop: FOR VARIABLE TO expr DO seq ENDFOR { std::cout << "FOR"; }
 ;
 
-while_loop: WHILE cond DO prog ENDWHILE{}
+while_loop: WHILE cond DO seq ENDWHILE { std::cout << "WHILE"; }
 ;
 
 control_struct: for_loop {}
@@ -79,19 +79,18 @@ control_struct: for_loop {}
 | conditional {}
 ;
 
-instr: DOWN {}
-| UP {}
-| CHANGECOL color {}
-| FORWARD CONSTANT {}
-| ROTATE CONSTANT {}
-| control_struct {}
+instr: DOWN             { std::cout << "DOWN"; }
+| UP                    { std::cout << "UP"; }
+| CHANGECOL color       { std::cout << "CHANGECOL"; }
+| FORWARD expr          { std::cout << "FORWARD"; }
+| ROTATE expr           { std::cout << "ROTATE"; }
+| LINE expr             { std::cout << "LINE"; }
+| RECTANGLE expr expr   { std::cout << "RECTANGLE"; }
+| control_struct        { }
+| affectation           { }
 ;
 
-comment: COMMENT {}
-| MULTCOMMENT {}
-;
-
-line: instr ENDLINE {}
+line: instr ENDLINE { std::cout << std::endl; }
 ;
 
 
