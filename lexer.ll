@@ -59,8 +59,8 @@ MARRON          { return BROWN; }
 "<"             { return AFFECT; }
 ";"             { return ENDLINE; }
 
-"#.*\n"         {}
-"###.*###\n"    {}
+#.*"\n"         {  }
+###.*###"\n"    {  }
 
 [ \n\t]         {}
 
