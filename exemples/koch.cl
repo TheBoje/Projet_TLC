@@ -1,5 +1,5 @@
 BAISSER;
-taille < 10;
+taille <- 10;
 
 POUR x ALLANT_A 4 FAIRE
     AVANCER taille;

@@ -35,14 +35,6 @@ FAIRE           { return DO; }
 LIGNE           { return LINE; }
 RECTANGLE       { return RECTANGLE; }
 
-SUP_A           { return GT;}
-SUP_EGAL_A      { return GEQ; }
-INF_A           { return LT; }
-INF_EGAL_A      { return LEQ; }
-EGAL_A          { return EQ; }
-ET              { return AND; }
-OU              { return OR; }
-
 NOIR            { return BLACK; }
 BLANC           { return WHITE; }
 ROUGE           { return RED; }
@@ -56,12 +48,20 @@ MARRON          { return BROWN; }
 {litteral}      { yylval.cst = atof(yytext); return CONSTANT; }
 {variable}      { yylval.var = strdup(yytext); return VARIABLE; }
 
+"<-"            { return AFFECT; }
 "+"             { return PLUS; }
 "-"             { return MINUS; }
 "*"             { return TIMES; }
 "/"             { return DIVIDE; }
-"<"             { return AFFECT; }
 ";"             { return ENDLINE; }
+
+">"             { return GT;}
+">="            { return GEQ; }
+"<"             { return LT; }
+"<="            { return LEQ; }
+"="             { return EQ; }
+"&&"            { return AND; }
+"||"            { return OR; }
 
 [ \n\t]         {}
 

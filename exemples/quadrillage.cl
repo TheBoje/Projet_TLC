@@ -1,5 +1,5 @@
-hauteur < 10;
-largeur < 20;
+hauteur <- 10;
+largeur <- 20;
 
 POUR x ALLANT_A largeur FAIRE
     TOURNER 90;
