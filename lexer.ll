@@ -1,4 +1,5 @@
 %{
+#include <iostream>
 #include "parser.tab.hh"
 extern "C" int yylex();
 %}
@@ -7,6 +8,9 @@ litteral -?[0-9]+
 variable [a-z]+([a-z]+|_)*
 
 %%
+
+###(.|\n)*###   { std::cout << "commentaire bloc"; }
+#.*"\n"         { std::cout << "commentaire ligne "; }
 
 BAISSER         { return DOWN; }
 LEVER           { return UP; }
@@ -58,9 +62,6 @@ MARRON          { return BROWN; }
 "/"             { return DIVIDE; }
 "<"             { return AFFECT; }
 ";"             { return ENDLINE; }
-
-#.*"\n"         {  }
-###.*###"\n"    {  }
 
 [ \n\t]         {}
 
