@@ -7,7 +7,10 @@
 namespace clurtle {
     class clurtle : public visitor {
         bool                _pen_is_up;
-        std::array<int, 3>  _color;
+        std::array<char, 3> _color;
+        std::array<int, 2>  _pos;
+        int                 _rotation;
+        
     public:
         clurtle();
 
