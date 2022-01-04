@@ -22,6 +22,11 @@ void yyerror(const char *s) { std::cerr << "ERREUR : " << s << std::endl; }
 %token <cst> CONSTANT
 %token <var> VARIABLE
 
+%left LT LEQ GT GEQ
+%left PLUS MINUS
+%left TIMES DIVIDE
+
+
 %start prog
 
 %%
@@ -47,6 +52,7 @@ color: BLACK    { std::cout << "C.BLACK"; }
 
 expr: CONSTANT      { std::cout << "constant"; }
 | VARIABLE          { std::cout << "var"; }
+| MINUS expr        { std::cout << "unary-"; }
 | expr PLUS expr    { std::cout << "+"; }
 | expr TIMES expr   { std::cout << "*"; }
 | expr MINUS expr   { std::cout << "-"; }
