@@ -12,7 +12,6 @@
 #include "for_loop.hh"
 #include "ope.hh"
 #include "constant.hh"
-#include "ope_bool.hh"
 
 clurtle::clurtle::clurtle() : 
     _pen_is_up(true), 
@@ -72,7 +71,9 @@ void clurtle::clurtle::visit_ope(const ope * o) {
     o->get_right()->visit(this);
     
     int size = _stack.size();
-    if(size >= 2)
+    int sb_size = _stack_bool.size();
+
+    if(ope != AND && ope != OR && size >= 2)
     {
         int a = _stack[size - 1];
         int b = _stack[size - 2];
@@ -97,10 +98,56 @@ void clurtle::clurtle::visit_ope(const ope * o) {
         case DIVIDE:
             _stack.push_back(a / b);
             break;
+
+        case GT:
+            _stack_bool.push_back(a > b);
+            break;
         
+        case GEQ:
+            _stack_bool.push_back(a >= b);
+            break;
+
+        case LT:
+            _stack_bool.push_back(a < b);
+            break;
+        
+        case LEQ:
+            _stack_bool.push_back(a <= b);
+            break;
+        
+        case EQ:
+            _stack_bool.push_back(a == b);
+            break;
+
         default:
             break;
         }
+    }
+    else if(ope == AND || ope == OR && sb_size >= 2)
+    {
+        bool a = _stack_bool[sb_size - 1];
+        bool b = _stack_bool[sb_size - 2];
+
+        _stack_bool.pop_back();
+        _stack_bool.pop_back();
+
+        switch (ope)
+        {
+        case AND:
+            _stack_bool.push_back(a && b);
+            break;
+        
+        case OR:
+            _stack_bool.push_back(a || b);
+            break;
+
+        default:
+            break;
+        }
+    }
+    else if(ope == NOT && sb_size >= 1)
+    {
+        _stack_bool[sb_size - 1] = !_stack_bool[sb_size - 1];
     }
     
 }
@@ -119,8 +166,4 @@ void clurtle::clurtle::visit_for_loop(const for_loop * fl) {
 
 void clurtle::clurtle::visit_constant(const constant * c) {
     _stack.push_back(c->get_value());
-}
-
-void clurtle::clurtle::visit_ope_bool(const ope_bool * o) {
-
 }

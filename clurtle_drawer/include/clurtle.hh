@@ -13,6 +13,7 @@ namespace clurtle {
         std::array<int, 2>  _pos;
         int                 _rotation;
         std::vector<int>    _stack;
+        std::vector<bool>   _stack_bool;
         
     public:
         clurtle();
@@ -29,7 +30,6 @@ namespace clurtle {
         void visit_for_loop(const for_loop * fl);
         void visit_ope(const ope * o);
         void visit_constant(const constant * c);
-        virtual void visit_ope_bool(const ope_bool * o) = 0;
     };
 }
 
