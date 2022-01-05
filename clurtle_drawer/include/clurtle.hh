@@ -30,6 +30,7 @@ namespace clurtle {
         void visit_for_loop(const for_loop * fl);
         void visit_ope(const ope * o);
         void visit_constant(const constant * c);
+        void visit_variable(const variable * v);
     };
 }
 

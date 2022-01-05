@@ -12,6 +12,7 @@
 #include "for_loop.hh"
 #include "ope.hh"
 #include "constant.hh"
+#include "variable.hh"
 
 clurtle::clurtle::clurtle() : 
     _pen_is_up(true), 
@@ -35,7 +36,7 @@ void clurtle::clurtle::visit_change_color(const change_color * cc) {
 void clurtle::clurtle::visit_forward(const forward * f) {
     f->get_amount()->visit(this);
     
-    int hyp = _stack[0]; _stack.pop_back();
+    int hyp = _stack[_stack.size() - 1]; _stack.pop_back();
 
     int x = _pos[0] + hyp * cos(_rotation * (M_1_PI / 180));
     int y = _pos[1] + hyp * sin(_rotation * (M_1_PI / 180));
@@ -46,7 +47,7 @@ void clurtle::clurtle::visit_forward(const forward * f) {
 void clurtle::clurtle::visit_rotate(const rotate * r) {
     r->get_amount()->visit(this);
     
-    int rot = _stack[0]; _stack.pop_back();
+    int rot = _stack[_stack.size() - 1]; _stack.pop_back();
 
     _rotation = (_rotation + rot) % 360;
     // TODO: tourne la tortue de amount degré
@@ -153,11 +154,22 @@ void clurtle::clurtle::visit_ope(const ope * o) {
 }
 
 void clurtle::clurtle::visit_conditional(const conditional * c) {
+    c->get_cond()->visit(this);
+    
+    bool cond = _stack_bool[_stack_bool.size() - 1]; _stack_bool.pop_back();
 
+    if(cond) 
+    {
+        c->get_cons()->visit(this);
+    }
+    else
+    {
+        c->get_alt()->visit(this);
+    }
 }
 
 void clurtle::clurtle::visit_while_loop(const while_loop * wl) {
-
+    
 }
 
 void clurtle::clurtle::visit_for_loop(const for_loop * fl) {
@@ -166,4 +178,8 @@ void clurtle::clurtle::visit_for_loop(const for_loop * fl) {
 
 void clurtle::clurtle::visit_constant(const constant * c) {
     _stack.push_back(c->get_value());
+}
+
+void clurtle::clurtle::visit_variable(const variable * v) {
+    v->get_value()->visit(this);
 }

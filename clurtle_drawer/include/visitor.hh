@@ -15,6 +15,7 @@ namespace clurtle {
     class for_loop;
     class ope;
     class constant;
+    class variable;
 
     class visitor  {
     public:
@@ -30,6 +31,7 @@ namespace clurtle {
         virtual void visit_for_loop(const for_loop * fl) = 0;
         virtual void visit_ope(const ope * o) = 0;
         virtual void visit_constant(const constant * c) = 0;
+        virtual void visit_variable(const variable * v) = 0;
     };
 
 }
