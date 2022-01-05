@@ -24,6 +24,7 @@ namespace clurtle {
         void visit_conditional(const conditional * c);
         void visit_while_loop(const while_loop * wl);
         void visit_for_loop(const for_loop * fl);
+        void visit_ope(const ope * o);
     };
 }
 
