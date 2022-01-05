@@ -2,15 +2,16 @@
 #define FORWARD_HH
 
 #include "instr.hh"
+#include "expr.hh"
 
 namespace clurtle {
     class forward : public instr {
-        int _amount;
+        expr * _amount;
     public:
-        forward(int amount);
+        forward(expr * amount);
         ~forward();
 
-        inline int get_amount() const { return _amount; }
+        inline expr * get_amount() const { return _amount; }
 
         void visit(visitor & v) const;
     };

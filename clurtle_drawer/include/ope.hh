@@ -6,13 +6,6 @@
 namespace clurtle {
 
     enum ope_symbol {
-        GT,
-        GEQ,
-        LT,
-        LEQ,
-        EQ,
-        AND,
-        OR,
         PLUS,
         MINUS,
         TIMES,

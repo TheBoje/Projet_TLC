@@ -14,6 +14,8 @@ namespace clurtle {
     class while_loop;
     class for_loop;
     class ope;
+    class ope_bool;
+    class constant;
 
     class visitor  {
     public:
@@ -28,6 +30,8 @@ namespace clurtle {
         virtual void visit_while_loop(const while_loop * wl) = 0;
         virtual void visit_for_loop(const for_loop * fl) = 0;
         virtual void visit_ope(const ope * o) = 0;
+        virtual void visit_constant(const constant * c) = 0;
+        virtual void visit_ope_bool(const ope_bool * o) = 0;
     };
 
 }

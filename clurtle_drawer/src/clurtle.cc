@@ -10,6 +10,9 @@
 #include "conditional.hh"
 #include "while_loop.hh"
 #include "for_loop.hh"
+#include "ope.hh"
+#include "constant.hh"
+#include "ope_bool.hh"
 
 clurtle::clurtle::clurtle() : 
     _pen_is_up(true), 
@@ -31,7 +34,10 @@ void clurtle::clurtle::visit_change_color(const change_color * cc) {
 }
 
 void clurtle::clurtle::visit_forward(const forward * f) {
-    int hyp = f->get_amount();
+    f->get_amount()->visit(this);
+    
+    int hyp = _stack[0]; _stack.pop_back();
+
     int x = _pos[0] + hyp * cos(_rotation * (M_1_PI / 180));
     int y = _pos[1] + hyp * sin(_rotation * (M_1_PI / 180));
 
@@ -39,7 +45,11 @@ void clurtle::clurtle::visit_forward(const forward * f) {
 }
 
 void clurtle::clurtle::visit_rotate(const rotate * r) {
-    _rotation = (_rotation + r->get_amount()) % 360;
+    r->get_amount()->visit(this);
+    
+    int rot = _stack[0]; _stack.pop_back();
+
+    _rotation = (_rotation + rot) % 360;
     // TODO: tourne la tortue de amount degré
 }
 
@@ -54,6 +64,47 @@ void clurtle::clurtle::visit_rectangle(const rectangle * r) {
     // TODO: dessine un rectangle
 }
 
+
+void clurtle::clurtle::visit_ope(const ope * o) {
+    ope_symbol ope = o->get_symbol();
+    
+    o->get_left()->visit(this); // not *this ?
+    o->get_right()->visit(this);
+    
+    int size = _stack.size();
+    if(size >= 2)
+    {
+        int a = _stack[size - 1];
+        int b = _stack[size - 2];
+
+        _stack.pop_back();
+        _stack.pop_back();
+
+        switch (ope)
+        {
+        case PLUS:
+            _stack.push_back(a + b);
+            break;
+
+        case MINUS:
+            _stack.push_back(a - b);
+            break;
+
+        case TIMES:
+            _stack.push_back(a * b);
+            break;
+
+        case DIVIDE:
+            _stack.push_back(a / b);
+            break;
+        
+        default:
+            break;
+        }
+    }
+    
+}
+
 void clurtle::clurtle::visit_conditional(const conditional * c) {
 
 }
@@ -63,5 +114,13 @@ void clurtle::clurtle::visit_while_loop(const while_loop * wl) {
 }
 
 void clurtle::clurtle::visit_for_loop(const for_loop * fl) {
+
+}
+
+void clurtle::clurtle::visit_constant(const constant * c) {
+    _stack.push_back(c->get_value());
+}
+
+void clurtle::clurtle::visit_ope_bool(const ope_bool * o) {
 
 }

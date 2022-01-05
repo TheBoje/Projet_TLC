@@ -2,15 +2,16 @@
 #define ROTATE_HH
 
 #include "instr.hh"
+#include "expr.hh"
 
 namespace clurtle {
     class rotate : public instr {
-            int _amount;
+            expr * _amount;
     public:
-        rotate(int amount);
+        rotate(expr * amount);
         ~rotate();
 
-        inline int get_amount() const { return _amount; }
+        inline expr * get_amount() const { return _amount; }
 
         void visit(visitor & v) const;
     };

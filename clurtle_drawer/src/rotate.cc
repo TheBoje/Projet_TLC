@@ -1,6 +1,6 @@
 #include "rotate.hh"
 
-clurtle::rotate::rotate(int amount) :
+clurtle::rotate::rotate(expr * amount) :
     _amount(amount)
 {}
 

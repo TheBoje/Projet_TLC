@@ -2,6 +2,8 @@
 #define CLURTLE_HH
 
 #include <array>
+#include <vector>
+
 #include "visitor.hh"
 
 namespace clurtle {
@@ -10,6 +12,7 @@ namespace clurtle {
         std::array<char, 3> _color;
         std::array<int, 2>  _pos;
         int                 _rotation;
+        std::vector<int>    _stack;
         
     public:
         clurtle();
@@ -25,6 +28,8 @@ namespace clurtle {
         void visit_while_loop(const while_loop * wl);
         void visit_for_loop(const for_loop * fl);
         void visit_ope(const ope * o);
+        void visit_constant(const constant * c);
+        virtual void visit_ope_bool(const ope_bool * o) = 0;
     };
 }
 

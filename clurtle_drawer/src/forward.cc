@@ -1,6 +1,6 @@
 #include "forward.hh"
 
-clurtle::forward::forward(int amount) :
+clurtle::forward::forward(expr * amount) :
     _amount(amount)
 {}
 
