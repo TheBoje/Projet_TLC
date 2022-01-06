@@ -3,12 +3,18 @@ extern "C" int yylex();
 
 #include <iostream>
 void yyerror(const char *s) { std::cerr << "ERREUR : " << s << std::endl; }
-
+extern int yylex();
 %}
+
+%code requires {
+    #include "clurtle_drawer/include/clurtle.hh"
+}
 
 %union {
     int cst;
     char* var;
+    instr * insrtuction;
+    expr * expression;
 }
 
 %token DOWN UP CHANGECOL
@@ -26,8 +32,10 @@ void yyerror(const char *s) { std::cerr << "ERREUR : " << s << std::endl; }
 %left PLUS MINUS
 %left TIMES DIVIDE
 
-
 %start prog
+
+%type<instr> seq affectation conditional for_loop while_loop instr
+%type<expr> expr cond
 
 %%
 
