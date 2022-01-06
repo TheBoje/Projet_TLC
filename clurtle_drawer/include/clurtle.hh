@@ -16,7 +16,20 @@ namespace clurtle {
         std::vector<int>            _stack;
         std::vector<bool>           _stack_bool;
         std::map<std::string, int>  _variables;
+
+        inline int get_last_int() { 
+            int a = _stack[_stack.size() - 1]; 
+            _stack.pop_back(); 
+            return a;
+        }
         
+        inline bool get_last_bool() {
+            bool a = _stack_bool[_stack_bool.size() - 1]; 
+            _stack_bool.pop_back(); 
+            return a;
+            
+        }
+
     public:
         clurtle();
 

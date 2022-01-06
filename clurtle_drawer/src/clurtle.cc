@@ -31,13 +31,13 @@ void clurtle::clurtle::visit_down(const down * d) {
 }
 
 void clurtle::clurtle::visit_change_color(const change_color * cc) {
-    _color = cc->get_color();
+    //_color = cc->get_color();
 }
 
 void clurtle::clurtle::visit_forward(const forward * f) {
     f->get_amount()->visit(this);
     
-    int hyp = _stack[_stack.size() - 1]; _stack.pop_back();
+    int hyp = get_last_int();
 
     int x = _pos[0] + hyp * cos(_rotation * (M_1_PI / 180));
     int y = _pos[1] + hyp * sin(_rotation * (M_1_PI / 180));
@@ -48,20 +48,23 @@ void clurtle::clurtle::visit_forward(const forward * f) {
 void clurtle::clurtle::visit_rotate(const rotate * r) {
     r->get_amount()->visit(this);
     
-    int rot = _stack[_stack.size() - 1]; _stack.pop_back();
+    int rot = get_last_int();
 
     _rotation = (_rotation + rot) % 360;
     // TODO: tourne la tortue de amount degré
 }
 
 void clurtle::clurtle::visit_line(const line * l) {
-    int length = l->get_length();
+    l->get_length()->visit(this);
+    int length = get_last_int();
     // TODO: dessine une ligne sans bouger la tortue
 }
 
 void clurtle::clurtle::visit_rectangle(const rectangle * r) {
-    int length = r->get_length();
-    int width = r->get_width();
+    r->get_length()->visit(this);
+    int length = get_last_int();
+    r->get_width()->visit(this);
+    int width = get_last_int();
     // TODO: dessine un rectangle
 }
 
@@ -157,7 +160,7 @@ void clurtle::clurtle::visit_ope(const ope * o) {
 void clurtle::clurtle::visit_conditional(const conditional * c) {
     c->get_cond()->visit(this);
     
-    bool cond = _stack_bool[_stack_bool.size() - 1]; _stack_bool.pop_back();
+    bool cond = get_last_bool();
 
     if(cond) 
     {
@@ -171,14 +174,12 @@ void clurtle::clurtle::visit_conditional(const conditional * c) {
 
 void clurtle::clurtle::visit_while_loop(const while_loop * wl) {
     wl->get_cond()->visit(this);
-    bool res = _stack_bool[_stack_bool.size() - 1];
-    _stack_bool.pop_back();
+    bool res = get_last_bool();
 
     while(res) {
         wl->get_body()->visit(this);
         wl->get_cond()->visit(this);
-        res = _stack_bool[_stack_bool.size() - 1];
-        _stack_bool.pop_back();
+        res = get_last_bool();
     }
 }
 
@@ -196,5 +197,5 @@ void clurtle::clurtle::visit_variable(const variable * v) {
 
 void clurtle::clurtle::visit_affectation(const affectation * a) {
     a->get_expr()->visit(this);
-    _variables[a->get_var()] = _stack[_stack.size() - 1];
+    _variables[a->get_var()] = get_last_int();
 }
