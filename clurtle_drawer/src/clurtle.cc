@@ -35,7 +35,7 @@ void clurtle::clurtle::visit_change_color(const change_color * cc) {
 }
 
 void clurtle::clurtle::visit_forward(const forward * f) {
-    f->get_amount()->visit(this);
+    f->get_amount()->visit(*this);
     
     int hyp = get_last_int();
 
@@ -46,7 +46,7 @@ void clurtle::clurtle::visit_forward(const forward * f) {
 }
 
 void clurtle::clurtle::visit_rotate(const rotate * r) {
-    r->get_amount()->visit(this);
+    r->get_amount()->visit(*this);
     
     int rot = get_last_int();
 
@@ -55,15 +55,15 @@ void clurtle::clurtle::visit_rotate(const rotate * r) {
 }
 
 void clurtle::clurtle::visit_line(const line * l) {
-    l->get_length()->visit(this);
+    l->get_length()->visit(*this);
     int length = get_last_int();
     // TODO: dessine une ligne sans bouger la tortue
 }
 
 void clurtle::clurtle::visit_rectangle(const rectangle * r) {
-    r->get_length()->visit(this);
+    r->get_length()->visit(*this);
     int length = get_last_int();
-    r->get_width()->visit(this);
+    r->get_width()->visit(*this);
     int width = get_last_int();
     // TODO: dessine un rectangle
 }
@@ -72,8 +72,8 @@ void clurtle::clurtle::visit_rectangle(const rectangle * r) {
 void clurtle::clurtle::visit_ope(const ope * o) {
     ope_symbol ope = o->get_symbol();
     
-    o->get_left()->visit(this); // not *this ?
-    o->get_right()->visit(this);
+    o->get_left()->visit(*this); // not **this ?
+    o->get_right()->visit(*this);
     
     int size = _stack.size();
     int sb_size = _stack_bool.size();
@@ -158,33 +158,44 @@ void clurtle::clurtle::visit_ope(const ope * o) {
 }
 
 void clurtle::clurtle::visit_conditional(const conditional * c) {
-    c->get_cond()->visit(this);
+    c->get_cond()->visit(*this);
     
     bool cond = get_last_bool();
 
     if(cond) 
     {
-        c->get_cons()->visit(this);
+        c->get_cons()->visit(*this);
     }
     else
     {
-        c->get_alt()->visit(this);
+        c->get_alt()->visit(*this);
     }
 }
 
 void clurtle::clurtle::visit_while_loop(const while_loop * wl) {
-    wl->get_cond()->visit(this);
+    wl->get_cond()->visit(*this);
     bool res = get_last_bool();
 
     while(res) {
-        wl->get_body()->visit(this);
-        wl->get_cond()->visit(this);
+        wl->get_body()->visit(*this);
+        wl->get_cond()->visit(*this);
         res = get_last_bool();
     }
 }
 
 void clurtle::clurtle::visit_for_loop(const for_loop * fl) {
+    std::string incr = fl->get_var();
+    _variables[incr] = 0;
 
+    fl->get_to()->visit(*this);
+    int to = get_last_int();
+
+    for(int i = 0; i < to; i++)
+    {
+        fl->get_body()->visit(*this);
+    }
+
+    _variables.erase(incr);
 }
 
 void clurtle::clurtle::visit_constant(const constant * c) {
@@ -196,6 +207,6 @@ void clurtle::clurtle::visit_variable(const variable * v) {
 }
 
 void clurtle::clurtle::visit_affectation(const affectation * a) {
-    a->get_expr()->visit(this);
+    a->get_expr()->visit(*this);
     _variables[a->get_var()] = get_last_int();
 }
