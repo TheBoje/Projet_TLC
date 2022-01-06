@@ -1,21 +1,55 @@
 %{
-extern "C" int yylex();
-
-#include <iostream>
-void yyerror(const char *s) { std::cerr << "ERREUR : " << s << std::endl; }
-extern int yylex();
+// extern "C" int yylex();
 %}
 
 %code requires {
-    #include "clurtle_drawer/include/clurtle.hh"
+    // https://stackoverflow.com/questions/34418381/how-to-reference-lex-or-parse-parameters-in-flex-rules
+    #include <iostream>
+    #include "clurtle_drawer/include/affectation.hh"
+    #include "clurtle_drawer/include/change_color.hh"
+    #include "clurtle_drawer/include/color.hh"
+    #include "clurtle_drawer/include/conditional.hh"
+    #include "clurtle_drawer/include/constant.hh"
+    #include "clurtle_drawer/include/down.hh"
+    #include "clurtle_drawer/include/expr.hh"
+    #include "clurtle_drawer/include/for_loop.hh"
+    #include "clurtle_drawer/include/forward.hh"
+    #include "clurtle_drawer/include/instr.hh"
+    #include "clurtle_drawer/include/line.hh"
+    #include "clurtle_drawer/include/ope.hh"
+    #include "clurtle_drawer/include/rectangle.hh"
+    #include "clurtle_drawer/include/rotate.hh"
+    #include "clurtle_drawer/include/seq.hh"
+    #include "clurtle_drawer/include/term.hh"
+    #include "clurtle_drawer/include/up.hh"
+    #include "clurtle_drawer/include/variable.hh"
+    #include "clurtle_drawer/include/while_loop.hh"
+
+    typedef struct Context { clurtle::sequence * s; } Context;
+
 }
 
 %union {
     int cst;
     char* var;
-    instr * insrtuction;
-    expr * expression;
+    clurtle::instr * instruction;
+    clurtle::expr * expression;
 }
+
+%define api.pure full
+%locations
+%parse-param { Context* context }
+%lex-param { Context* context }
+
+
+%code provides {
+   #define YY_DECL \
+       int yylex(YYSTYPE* yylval, YYLTYPE* yyllocp, Context* context)
+   YY_DECL;
+
+   int yyerror(YYLTYPE* yyllocp, Context* context, const char* message) { std::cerr << "ERREUR : " << message << std::endl; return 1; }
+}
+
 
 %token DOWN UP CHANGECOL
 %token ROTATE FORWARD
@@ -34,8 +68,8 @@ extern int yylex();
 
 %start prog
 
-%type<instr> seq affectation conditional for_loop while_loop instr
-%type<expr> expr cond
+%type<instruction> seq affectation conditional for_loop while_loop instr
+%type<expression> expr cond
 
 %%
 

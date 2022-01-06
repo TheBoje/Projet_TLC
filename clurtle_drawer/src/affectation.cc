@@ -1,6 +1,6 @@
 #include "affectation.hh"
 
-clurtle::affectation::affectation(std::string var, expr * expr) :
+clurtle::affectation::affectation(variable * var, expr * expr) : 
     _var(var),
     _expr(expr)
 {}

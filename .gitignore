@@ -2,5 +2,6 @@ lex.yy.c
 *.o
 parser.tab.*
 prog
+clurtle
 .idea
 .vscode

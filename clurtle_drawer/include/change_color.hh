@@ -11,7 +11,7 @@ namespace clurtle {
         color * _color;
 
     public: 
-        change_color(std::array<expr *, 3> color);
+        change_color(color * color);
         ~change_color();
 
         inline color * get_color() const { return _color; };

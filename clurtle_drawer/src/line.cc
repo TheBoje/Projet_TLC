@@ -1,6 +1,6 @@
 #include "line.hh"
 
-clurtle::line::line(int length) :
+clurtle::line::line(expr * length) :
     _length(length)
 {}
 

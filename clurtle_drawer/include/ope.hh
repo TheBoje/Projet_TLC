@@ -6,6 +6,10 @@
 namespace clurtle {
 
     enum ope_symbol {
+        PLUS,
+        MINUS,
+        TIMES,
+        DIVIDE,
         GT,
         GEQ,
         LT,
@@ -13,11 +17,7 @@ namespace clurtle {
         EQ,
         AND,
         OR,
-        NOT,
-        PLUS,
-        MINUS,
-        TIMES,
-        DIVIDE
+        NOT
     };
 
     class ope : public expr {

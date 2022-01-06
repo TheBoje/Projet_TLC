@@ -1,6 +1,6 @@
 #include "rectangle.hh"
 
-clurtle::rectangle::rectangle(int length, int width) :
+clurtle::rectangle::rectangle(expr * length, expr * width) :
     _length(length),
     _width(width)
 {}

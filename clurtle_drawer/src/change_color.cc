@@ -1,6 +1,6 @@
 #include "change_color.hh"
 
-clurtle::change_color::change_color(std::array<int, 3> color) :
+clurtle::change_color::change_color(color * color) :
     _color(color)
 {}
 

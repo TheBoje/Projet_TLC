@@ -10,7 +10,7 @@ namespace clurtle {
         instr * _instr;
         seq_item * _next;
     public:
-        seq_item(instr * i, seq_item * next = nullptr);
+        seq_item(instr * i, seq_item * next);
         ~seq_item();
 
         inline const instr * get_inst() const { return _instr; }
@@ -24,7 +24,7 @@ namespace clurtle {
     class sequence : public instr {
         seq_item * _first;
     public:
-        sequence(instr * first = nullptr);
+        sequence(instr * first);
         ~sequence();
         
         inline seq_item * get_first() const { return _first; }

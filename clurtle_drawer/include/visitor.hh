@@ -6,6 +6,7 @@ namespace clurtle {
     class up; 
     class down;
     class change_color;
+    class color;
     class forward;
     class rotate;
     class line;
@@ -24,6 +25,7 @@ namespace clurtle {
         virtual void visit_up(const up * u) = 0;
         virtual void visit_down(const down * d) = 0;
         virtual void visit_change_color(const change_color * cc) = 0;
+        virtual void visit_color(const color * c) = 0;
         virtual void visit_forward(const forward * f) = 0;
         virtual void visit_rotate(const rotate * r) = 0;
         virtual void visit_line(const line * l) = 0;
