@@ -13,6 +13,7 @@
 #include "ope.hh"
 #include "constant.hh"
 #include "variable.hh"
+#include "affectation.hh"
 
 clurtle::clurtle::clurtle() : 
     _pen_is_up(true), 
@@ -169,7 +170,16 @@ void clurtle::clurtle::visit_conditional(const conditional * c) {
 }
 
 void clurtle::clurtle::visit_while_loop(const while_loop * wl) {
-    
+    wl->get_cond()->visit(this);
+    bool res = _stack_bool[_stack_bool.size() - 1];
+    _stack_bool.pop_back();
+
+    while(res) {
+        wl->get_body()->visit(this);
+        wl->get_cond()->visit(this);
+        res = _stack_bool[_stack_bool.size() - 1];
+        _stack_bool.pop_back();
+    }
 }
 
 void clurtle::clurtle::visit_for_loop(const for_loop * fl) {
@@ -181,5 +191,10 @@ void clurtle::clurtle::visit_constant(const constant * c) {
 }
 
 void clurtle::clurtle::visit_variable(const variable * v) {
-    v->get_value()->visit(this);
+    _stack.push_back(_variables[v->get_name()]);
+}
+
+void clurtle::clurtle::visit_affectation(const affectation * a) {
+    a->get_expr()->visit(this);
+    _variables[a->get_var()] = _stack[_stack.size() - 1];
 }

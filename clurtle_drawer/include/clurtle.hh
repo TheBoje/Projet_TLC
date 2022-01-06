@@ -1,6 +1,7 @@
 #ifndef CLURTLE_HH
 #define CLURTLE_HH
 
+#include <map>
 #include <array>
 #include <vector>
 
@@ -8,12 +9,13 @@
 
 namespace clurtle {
     class clurtle : public visitor {
-        bool                _pen_is_up;
-        std::array<char, 3> _color;
-        std::array<int, 2>  _pos;
-        int                 _rotation;
-        std::vector<int>    _stack;
-        std::vector<bool>   _stack_bool;
+        bool                        _pen_is_up;
+        std::array<char, 3>         _color;
+        std::array<int, 2>          _pos;
+        int                         _rotation;
+        std::vector<int>            _stack;
+        std::vector<bool>           _stack_bool;
+        std::map<std::string, int>  _variables;
         
     public:
         clurtle();
@@ -31,6 +33,7 @@ namespace clurtle {
         void visit_ope(const ope * o);
         void visit_constant(const constant * c);
         void visit_variable(const variable * v);
+        void visit_affectation(const affectation * a);
     };
 }
 
