@@ -16,6 +16,7 @@ namespace clurtle {
     class ope;
     class constant;
     class variable;
+    class affectation;
 
     class visitor  {
     public:
@@ -32,6 +33,7 @@ namespace clurtle {
         virtual void visit_ope(const ope * o) = 0;
         virtual void visit_constant(const constant * c) = 0;
         virtual void visit_variable(const variable * v) = 0;
+        virtual void visit_affectation(const affectation * a) = 0;
     };
 
 }
