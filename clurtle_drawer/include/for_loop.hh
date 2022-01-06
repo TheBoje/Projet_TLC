@@ -4,14 +4,16 @@
 #include <string>
 
 #include "instr.hh"
+#include "expr.hh"
 
 namespace clurtle {
     class for_loop : public instr {
         std::string _var;
+        expr *      _to;
         instr *     _body;
 
     public:
-        for_loop(std::string var, instr * body);
+        for_loop(std::string var, expr * to, instr * body);
         ~for_loop();
 
         inline std::string get_var() const { return _var; }
