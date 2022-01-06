@@ -5,8 +5,8 @@
 
 namespace clurtle {
     class down : public instr {
-    
-    
+    public:
+        void visit(visitor & v) const { return v.visit_down(this); }
     };
 }
 
