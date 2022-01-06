@@ -6,7 +6,7 @@
 
 namespace clurtle {
     class conditional : public instr {
-        expr * _cond;
+        expr *  _cond;
         instr * _cons;
         instr * _alt;
 

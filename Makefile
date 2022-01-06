@@ -14,8 +14,10 @@ SRC=lex.yy.c parser.tab.cc \
 	clurtle_drawer/src/variable.cc \
 	clurtle_drawer/src/while_loop.cc \
 	clurtle_drawer/src/clurtle_cpp.cc \
-#	clurtle_drawer/src/clurtle.cc \
 	main.cc
+
+#	clurtle_drawer/src/clurtle.cc \
+
 SRCH=clurtle_drawer/include/affectation.hh \
 	clurtle_drawer/include/change_color.hh \
 	clurtle_drawer/include/color.hh \
@@ -48,7 +50,7 @@ lex.yy.c: lexer.ll parser.tab.cc
 	flex $<
 
 parser.tab.cc: parser.yy
-	bison -d $<
+	bison -vd $<
 
 clean:
 	rm -fr $(OBJ) *~ lex.yy.c parser.tab.cc parser.tab.hh clurtle

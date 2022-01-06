@@ -24,7 +24,7 @@ namespace clurtle {
     class sequence : public instr {
         seq_item * _first;
     public:
-        sequence(instr * first);
+        sequence(seq_item * first);
         ~sequence();
         
         inline seq_item * get_first() const { return _first; }

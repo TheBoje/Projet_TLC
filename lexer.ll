@@ -1,7 +1,8 @@
 %{
 #include <iostream>
+extern "C" int yylex();
+// extern "C" void yyerror(clurtle::sequence * seq, const char* message);
 #include "parser.tab.hh"
-// extern "C" int yylex(YYSTYPE* yylval, YYLTYPE* yyllocp, Context* context);
 %}
 
 litteral -?[0-9]+
@@ -42,11 +43,11 @@ VERT            { return GREEN; }
 BLEU            { return BLUE; }
 JAUNE           { return YELLOW; }
 VIOLET          { return PURPLE; }
-MARRON          { return BROWN; }
+CYAN            { return CYAN; }
 
 
-{litteral}      { yylval->cst = atof(yytext); return CONSTANT; }
-{variable}      { yylval->var = strdup(yytext); return VARIABLE; }
+{litteral}      { yylval.cst = atof(yytext); return CONSTANT; }
+{variable}      { yylval.var = strdup(yytext); return VARIABLE; }
 
 "<-"            { return AFFECT; }
 "+"             { return PLUS; }
@@ -65,6 +66,7 @@ MARRON          { return BROWN; }
 "="             { return EQ; }
 "&&"            { return AND; }
 "||"            { return OR; }
+"!"             { return NOT; }
 
 [ \n\t]         {}
 
