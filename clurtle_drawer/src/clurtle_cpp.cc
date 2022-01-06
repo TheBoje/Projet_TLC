@@ -8,6 +8,7 @@
 #include "conditional.hh"
 #include "while_loop.hh"
 #include "constant.hh"
+#include "for_loop.hh"
 
 namespace clurtle {
     clurtle_cpp::clurtle_cpp(std::string filename) : _pen_is_up(0), _pos_x(0), _pos_y(0), _rot(0) {
@@ -95,6 +96,10 @@ namespace clurtle {
     }
 
     void clurtle_cpp::visit_for_loop(const for_loop * fl) {
-        std::cout << "FOR ("
+        std::cout << "FOR ( let " << fl->get_var() << " = 0; " << fl->get_var() << " < ";
+        fl->get_to()->visit(*this);
+        std::cout << ") {" << std::endl;
+        fl->get_body()->visit(*this);
+        std::cout << "}" << std::endl;
     }
 }
