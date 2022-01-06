@@ -2,15 +2,16 @@
 #define LINE_HH
 
 #include "instr.hh"
+#include "expr.hh"
 
 namespace clurtle {
     class line : public instr {
-        int _length;
+        expr * _length;
     public:
-        line(int length);
+        line(expr * length);
         ~line();
 
-        inline int get_length() const { return _length; }
+        inline expr * get_length() const { return _length; }
 
         void visit(visitor & v) const;    
     };

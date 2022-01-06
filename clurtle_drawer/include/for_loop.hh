@@ -4,7 +4,7 @@
 #include "instr.hh"
 
 namespace clurtle {
-    class for_loop : public instr{
+    class for_loop : public instr {
     
     
     };
