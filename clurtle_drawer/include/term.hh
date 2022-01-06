@@ -8,7 +8,7 @@ namespace clurtle {
     public:
         virtual ~term() {}
 
-        virtual void visit(visitor * v) const = 0;
+        virtual void visit(visitor & v) const = 0;
     };
 }
 

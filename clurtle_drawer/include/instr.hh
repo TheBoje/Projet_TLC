@@ -4,7 +4,7 @@
 #include "term.hh"
 
 namespace clurtle {
-    class instr : public term{
+    class instr : public term {
     public:
         ~instr() {}
     

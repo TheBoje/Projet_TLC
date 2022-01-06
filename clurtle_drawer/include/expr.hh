@@ -6,7 +6,7 @@
 namespace clurtle {
     class expr : public term {
     public:
-        ~expr() {}    
+        ~expr() {}
     };
 }
 
