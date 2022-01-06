@@ -17,6 +17,7 @@ namespace clurtle {
         ~for_loop();
 
         inline std::string get_var() const { return _var; }
+        inline expr * get_to() const {return _to; }
         inline instr * get_body() const { return _body; }
 
         void visit(visitor & v) const;    
