@@ -16,12 +16,15 @@
 #include "affectation.hh"
 #include "seq.hh"
 
-clurtle::clurtle::clurtle() : 
+
+clurtle::clurtle::clurtle(cimg_library::CImg<unsigned char> & img) : 
     _pen_is_up(true), 
     _color({0, 0, 0}),
     _pos({0, 0}),
-    _rotation(0)
-{} 
+    _rotation(0),
+    _img(img)
+{
+}
 
 void clurtle::clurtle::visit_up(const up * u) {
     _pen_is_up = true;
@@ -32,7 +35,17 @@ void clurtle::clurtle::visit_down(const down * d) {
 }
 
 void clurtle::clurtle::visit_change_color(const change_color * cc) {
-    //_color = cc->get_color();
+    cc->get_color()->get_r()->visit(*this);
+    cc->get_color()->get_g()->visit(*this);
+    cc->get_color()->get_b()->visit(*this);
+
+    char r = get_last_int();
+    char g = get_last_int();
+    char b = get_last_int();
+
+    _color[0] = r;
+    _color[1] = g;
+    _color[2] = b;
 }
 
 void clurtle::clurtle::visit_forward(const forward * f) {
@@ -43,7 +56,11 @@ void clurtle::clurtle::visit_forward(const forward * f) {
     int x = _pos[0] + hyp * cos(_rotation * (M_1_PI / 180));
     int y = _pos[1] + hyp * sin(_rotation * (M_1_PI / 180));
 
-    // TODO: Déplacer de "amount"
+    if(!_pen_is_up)
+        _img.draw_line(_pos[0], _pos[1], x, y, _color);
+
+    _pos[0] = x;
+    _pos[1] = y;
 }
 
 void clurtle::clurtle::visit_rotate(const rotate * r) {
@@ -52,13 +69,16 @@ void clurtle::clurtle::visit_rotate(const rotate * r) {
     int rot = get_last_int();
 
     _rotation = (_rotation + rot) % 360;
-    // TODO: tourne la tortue de amount degré
 }
 
 void clurtle::clurtle::visit_line(const line * l) {
     l->get_length()->visit(*this);
     int length = get_last_int();
-    // TODO: dessine une ligne sans bouger la tortue
+
+    int x = _pos[0] + length * cos(_rotation * (M_1_PI / 180));
+    int y = _pos[1] + length * sin(_rotation * (M_1_PI / 180));
+
+    _img.draw_line(_pos[0], _pos[1], x, y, _color);
 }
 
 void clurtle::clurtle::visit_rectangle(const rectangle * r) {
@@ -66,7 +86,19 @@ void clurtle::clurtle::visit_rectangle(const rectangle * r) {
     int length = get_last_int();
     r->get_width()->visit(*this);
     int width = get_last_int();
-    // TODO: dessine un rectangle
+
+    for(int i = 0; i < 4; i++) 
+    {
+        int x = _pos[0] + (i % 2 == 0 ? length : width) * cos(_rotation * (M_1_PI / 180));
+        int y = _pos[1] + (i % 2 == 0 ? length : width) * sin(_rotation * (M_1_PI / 180));
+
+        _img.draw_line(_pos[0], _pos[1], x, y, _color);
+
+        _pos[0] = x;
+        _pos[1] = y;
+
+        _rotation = (_rotation + 90) % 360;        
+    }
 }
 
 
@@ -209,7 +241,7 @@ void clurtle::clurtle::visit_variable(const variable * v) {
 
 void clurtle::clurtle::visit_affectation(const affectation * a) {
     a->get_expr()->visit(*this);
-    _variables[a->get_var()] = get_last_int();
+    _variables[a->get_var()->get_name()] = get_last_int();
 }
 
 void clurtle::clurtle::visit_sequence(const sequence * s) {
