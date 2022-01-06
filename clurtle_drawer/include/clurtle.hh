@@ -47,6 +47,7 @@ namespace clurtle {
         void visit_constant(const constant * c);
         void visit_variable(const variable * v);
         void visit_affectation(const affectation * a);
+        void visit_sequence(const sequence * s);
     };
 }
 

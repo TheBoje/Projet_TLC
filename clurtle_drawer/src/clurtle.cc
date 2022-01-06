@@ -14,6 +14,7 @@
 #include "constant.hh"
 #include "variable.hh"
 #include "affectation.hh"
+#include "seq.hh"
 
 clurtle::clurtle::clurtle() : 
     _pen_is_up(true), 
@@ -209,4 +210,13 @@ void clurtle::clurtle::visit_variable(const variable * v) {
 void clurtle::clurtle::visit_affectation(const affectation * a) {
     a->get_expr()->visit(*this);
     _variables[a->get_var()] = get_last_int();
+}
+
+void clurtle::clurtle::visit_sequence(const sequence * s) {
+    seq_item * t = s->get_first();
+    while(t != nullptr) 
+    {
+        t->get_inst()->visit(*this);
+        t = t->get_next();
+    }
 }
