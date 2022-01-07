@@ -38,6 +38,7 @@ namespace clurtle {
         void visit_up(const up * u);
         void visit_down(const down * d);
         void visit_change_color(const change_color * cc);
+        void visit_color(const color * c);
         void visit_forward(const forward * f);
         void visit_rotate(const rotate * r);
         void visit_line(const line * l);
@@ -50,6 +51,7 @@ namespace clurtle {
         void visit_variable(const variable * v);
         void visit_affectation(const affectation * a);
         void visit_sequence(const sequence * s);
+        void visit_seq_item(const seq_item * si);
     };
 }
 

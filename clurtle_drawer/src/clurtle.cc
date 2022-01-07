@@ -15,6 +15,7 @@
 #include "variable.hh"
 #include "affectation.hh"
 #include "seq.hh"
+#include "color.hh"
 
 
 clurtle::clurtle::clurtle(cimg_library::CImg<unsigned char> & img) : 
@@ -35,9 +36,23 @@ void clurtle::clurtle::visit_down(const down * d) {
 }
 
 void clurtle::clurtle::visit_change_color(const change_color * cc) {
-    cc->get_color()->get_r()->visit(*this);
-    cc->get_color()->get_g()->visit(*this);
-    cc->get_color()->get_b()->visit(*this);
+    cc->get_color()->visit(*this);
+    cc->get_color()->visit(*this);
+    cc->get_color()->visit(*this);
+
+    char r = get_last_int();
+    char g = get_last_int();
+    char b = get_last_int();
+
+    _color[0] = r;
+    _color[1] = g;
+    _color[2] = b;
+}
+
+void clurtle::clurtle::visit_color(const color * c) {
+    c->get_r()->visit(*this);
+    c->get_g()->visit(*this);
+    c->get_b()->visit(*this);
 
     char r = get_last_int();
     char g = get_last_int();
@@ -217,7 +232,7 @@ void clurtle::clurtle::visit_while_loop(const while_loop * wl) {
 }
 
 void clurtle::clurtle::visit_for_loop(const for_loop * fl) {
-    std::string incr = fl->get_var();
+    std::string incr = fl->get_var()->get_name();
     _variables[incr] = 0;
 
     fl->get_to()->visit(*this);
@@ -244,6 +259,7 @@ void clurtle::clurtle::visit_affectation(const affectation * a) {
     _variables[a->get_var()->get_name()] = get_last_int();
 }
 
+
 void clurtle::clurtle::visit_sequence(const sequence * s) {
     seq_item * t = s->get_first();
     while(t != nullptr) 
@@ -252,3 +268,18 @@ void clurtle::clurtle::visit_sequence(const sequence * s) {
         t = t->get_next();
     }
 }
+
+void clurtle::clurtle::visit_seq_item(const seq_item * si) {
+    if (si != NULL) 
+    {
+        if (si->get_inst() != NULL) 
+        {
+            si->get_inst()->visit(*this);
+            if (si->get_next() != NULL) 
+            {
+                si->get_next()->visit(*this);
+            } 
+        }
+    }
+}
+
