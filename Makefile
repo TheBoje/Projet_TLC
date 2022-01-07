@@ -54,6 +54,6 @@ parser.tab.cc: parser.yy
 	bison -vd $<
 
 clean:
-	rm -fr $(OBJ) *~ lex.yy.c parser.tab.cc parser.tab.hh clurtle
+	rm -fr $(OBJ) *~ lex.yy.c parser.tab.cc parser.tab.hh clurtle parser.output
 
 .PHONY: clean
