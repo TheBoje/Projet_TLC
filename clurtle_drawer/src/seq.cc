@@ -18,12 +18,7 @@ void clurtle::seq_item::add(instr * i) {
         _next->add(i);
 }
 
-clurtle::sequence::sequence(instr * i) :
-    _first(nullptr)
-{
-    if(i != nullptr)
-        _first = new seq_item(i);
-}
+clurtle::sequence::sequence(seq_item * i) : _first(i) {}
 
 clurtle::sequence::~sequence() {
     if(_first != nullptr)

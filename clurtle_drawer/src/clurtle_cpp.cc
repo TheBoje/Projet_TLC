@@ -44,17 +44,19 @@ namespace clurtle {
     }
 
     void clurtle_cpp::visit_change_color(const change_color * cc) {
-        std::cout << "COLOR = {";
+        std::cout << "CHANGE_COLOR = ";
         cc->get_color()->visit(*this);
-        std::cout << "};" << std::endl; 
+        std::cout << ";" << std::endl; 
     }
 
     void clurtle_cpp::visit_color(const color * c) {
+        std::cout << "{";
         c->get_r()->visit(*this);
         std::cout << ", ";
         c->get_g()->visit(*this);
         std::cout << ", ";
         c->get_b()->visit(*this);
+        std::cout << "}";
     }
 
 
@@ -118,37 +120,37 @@ namespace clurtle {
         o->get_left()->visit(*this);
         switch (o->get_symbol())
         {
-        case PLUS:
+        case OP_PLUS:
             std::cout << "+";
             break;
-        case MINUS:
+        case OP_MINUS:
             std::cout << "-";
             break;
-        case TIMES:
+        case OP_TIMES:
             std::cout << "*";
             break;
-        case GT:
+        case OP_GT:
             std::cout << ">";
             break;
-        case GEQ:
+        case OP_GEQ:
             std::cout << ">=";
             break;
-        case LT:
+        case OP_LT:
             std::cout << "<";
             break;
-        case LEQ:
+        case OP_LEQ:
             std::cout << "<=";
             break;
-        case EQ:
+        case OP_EQ:
             std::cout << "==";
             break;
-        case AND:
+        case OP_AND:
             std::cout << "&&";
             break;
-        case OR:
+        case OP_OR:
             std::cout << "||";
             break;
-        case NOT:
+        case OP_NOT:
             std::cout << "!";
             break;
         default:
@@ -176,11 +178,11 @@ namespace clurtle {
     }
 
     void clurtle_cpp::visit_sequence(const sequence * s) {
-        seq_item * t = s->get_first();
-        while(t->has_next()) 
-        {
-            t->get_inst()->visit(*this);
-            t = t->get_next();
-        }
+        s->get_first()->visit(*this);
+    }
+
+    void clurtle_cpp::visit_seq_item(const seq_item * si) {
+        si->get_inst()->visit(*this);
+        si->get_next()->visit(*this);
     }
 }

@@ -10,8 +10,8 @@ variable [a-z]+([a-z]+|_)*
 
 %%
 
-###(.|\n)*###   { std::cout << "commentaire bloc"; }
-#.*"\n"         { std::cout << "commentaire ligne "; }
+###(.|\n)*###   { }
+#.*"\n"         { }
 
 BAISSER         { return DOWN; }
 LEVER           { return UP; }

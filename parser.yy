@@ -3,7 +3,7 @@
 extern "C" int yylex();
 
 #include "clurtle_drawer/include/seq.hh"
-extern "C" void yyerror(clurtle::sequence * res, const char* message);
+extern "C" void yyerror(clurtle::sequence ** res, const char* message);
 
 %}
 
@@ -38,13 +38,15 @@ extern "C" void yyerror(clurtle::sequence * res, const char* message);
     clurtle::instr * instruction;
     clurtle::expr * expression;
     clurtle::seq_item * seq_item;
+    clurtle::color * color;
+    clurtle::sequence * sequence;
 }
 
-%parse-param { clurtle::sequence * res }
+%parse-param { clurtle::sequence ** res }
 
 
 %code provides {
-    int yyparse(clurtle::sequence * res);
+    int yyparse(clurtle::sequence ** res);
 }
 
 
@@ -65,16 +67,18 @@ extern "C" void yyerror(clurtle::sequence * res, const char* message);
 
 %start prog
 
+%type<sequence> prog
+%type<color> color
 %type<seq_item> seq
-%type<instruction> affectation conditional for_loop while_loop instr prog control_struct line
-%type<expression> expr cond color
+%type<instruction> affectation conditional for_loop while_loop instr control_struct line
+%type<expression> expr cond
 
 %%
 
-prog: seq { res = new sequence($1); }
+prog: seq { *res = $$ = new sequence($1); } 
 ;
 
-seq: line seq { $$ = new seq_item($1, $2) }
+seq: line seq { $$ = new seq_item($1, $2); }
 | {}
 ;
 
@@ -92,27 +96,27 @@ color: BLACK     { $$ = new color(new constant(  0), new constant(  0), new cons
 
 expr: CONSTANT      { $$ = new constant(yylval.cst); }
 | VARIABLE          { $$ = new variable(yylval.var); }
-| expr PLUS expr    { $$ = new ope($1, ope_symbol::PLUS, $3); }
-| expr TIMES expr   { $$ = new ope($1, ope_symbol::TIMES, $3); }
-| expr MINUS expr   { $$ = new ope($1, ope_symbol::MINUS, $3); }
-| expr DIVIDE expr  { $$ = new ope($1, ope_symbol::DIVIDE, $3); }
+| expr PLUS expr    { $$ = new ope(OP_PLUS, $1, $3); }
+| expr TIMES expr   { $$ = new ope(OP_TIMES, $1, $3); }
+| expr MINUS expr   { $$ = new ope(OP_MINUS, $1, $3); }
+| expr DIVIDE expr  { $$ = new ope(OP_DIVIDE, $1, $3); }
 | LPAR expr RPAR    { $$ = $2; } 
 ;
 
-cond: expr GT expr  { $$ = new ope($1, ope_symbol::GT, $3); }
-| expr GEQ expr     { $$ = new ope($1, ope_symbol::GEQ, $3); }
-| expr LT expr      { $$ = new ope($1, ope_symbol::LT, $3); }
-| expr LEQ expr     { $$ = new ope($1, ope_symbol::LEQ, $3); }
-| expr EQ expr      { $$ = new ope($1, ope_symbol::EQ, $3); }
-| cond AND cond     { $$ = new ope($1, ope_symbol::AND, $3); }
-| cond OR cond      { $$ = new ope($1, ope_symbol::OR, $3); }
-| NOT cond          { $$ = new ope($2, ope_symbol::NOT, nullptr); }
+cond: expr GT expr  { $$ = new ope(OP_GT, $1, $3); }
+| expr GEQ expr     { $$ = new ope(OP_GEQ, $1, $3); }
+| expr LT expr      { $$ = new ope(OP_LT, $1, $3); }
+| expr LEQ expr     { $$ = new ope(OP_LEQ, $1, $3); }
+| expr EQ expr      { $$ = new ope(OP_EQ, $1, $3); }
+| cond AND cond     { $$ = new ope(OP_AND, $1, $3); }
+| cond OR cond      { $$ = new ope(OP_OR, $1, $3); }
+| NOT cond          { $$ = new ope(OP_NOT, $2, nullptr); }
 ;
 
 affectation: VARIABLE AFFECT expr { $$ = new affectation(new variable(yylval.var), $3); }
 ;
 
-conditional: IF cond DO seq ENDIF { $$ = new conditional($2, $4, nullptr); }
+conditional: IF cond DO seq ENDIF { $$ = new conditional($2, $4); }
 | IF cond DO seq ELSE DO seq ENDIF { $$ = new conditional($2, $4, $7); }
 ;
 
@@ -144,4 +148,4 @@ line: instr ENDLINE { $$ = $1; }
 
 %%
 
-void yyerror(clurtle::sequence * res, const char* message) { std::cerr << "ERREUR : " << message << std::endl; }
+void yyerror(clurtle::sequence ** res, const char* message) { std::cerr << "ERREUR : " << message << std::endl; }

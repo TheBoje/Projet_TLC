@@ -1,6 +1,6 @@
 #include "conditional.hh"
 
-clurtle::conditional::conditional(expr * cond, instr * cons, instr * alt) :
+clurtle::conditional::conditional(expr * cond, seq_item * cons, seq_item * alt) :
     _cond(cond),
     _cons(cons),
     _alt(alt)

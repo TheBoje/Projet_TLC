@@ -6,7 +6,7 @@
 
 namespace clurtle {
 
-    class seq_item {
+    class seq_item  : public instr {
         instr * _instr;
         seq_item * _next;
     public:
@@ -18,6 +18,7 @@ namespace clurtle {
         inline seq_item * get_next() const { return _next; }
 
         void add(instr * i);
+        void visit(visitor & v) const { v.visit_seq_item(this); }
     };
 
 
