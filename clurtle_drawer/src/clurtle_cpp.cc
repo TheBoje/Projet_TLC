@@ -19,15 +19,15 @@
 
 namespace clurtle {
     clurtle_cpp::clurtle_cpp(std::string filename) : _pen_is_up(0), _pos_x(0), _pos_y(0), _rot(0), _indent(0) {
-        try
-        {
-            _file.open(filename);
-        }
-        catch(const std::exception& e)
-        {
-            std::cerr << e.what() << '\n';
-            exit(EXIT_FAILURE);
-        }
+        // try
+        // {
+        //     _file.open(filename);
+        // }
+        // catch(const std::exception& e)
+        // {
+        //     std::cerr << e.what() << '\n';
+        //     exit(EXIT_FAILURE);
+        // }
         
         // TODO: FREE ME PLEASE !!!
         _color = {new constant(0), new constant(0), new constant(0)};

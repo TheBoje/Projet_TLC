@@ -14,15 +14,16 @@ SRC=lex.yy.c parser.tab.cc \
 	clurtle_drawer/src/variable.cc \
 	clurtle_drawer/src/while_loop.cc \
 	clurtle_drawer/src/clurtle_cpp.cc \
+	clurtle_drawer/src/clurtle.cc \
 	main.cc
 
-#	clurtle_drawer/src/clurtle.cc \
 
 SRCH=clurtle_drawer/include/affectation.hh \
 	clurtle_drawer/include/change_color.hh \
 	clurtle_drawer/include/color.hh \
 	clurtle_drawer/include/conditional.hh \
 	clurtle_drawer/include/constant.hh \
+	clurtle_drawer/include/CImg.h \
 	clurtle_drawer/include/down.hh \
 	clurtle_drawer/include/expr.hh \
 	clurtle_drawer/include/for_loop.hh \

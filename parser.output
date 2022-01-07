@@ -10,7 +10,7 @@ Grammar
     1 prog: seq
 
     2 seq: line seq
-    3    | %empty
+    3    | ε
 
     4 color: BLACK
     5      | WHITE
@@ -117,13 +117,13 @@ Nonterminals, with rules where they appear
 
     $accept (45)
         on left: 0
-    prog <instruction> (46)
+    prog <sequence> (46)
         on left: 1
         on right: 0
     seq <seq_item> (47)
         on left: 2 3
         on right: 1 2 29 30 31 32
-    color <expression> (48)
+    color <color> (48)
         on left: 4 5 6 7 8 9 10 11 12
         on right: 38
     expr <expression> (49)
@@ -157,7 +157,7 @@ Nonterminals, with rules where they appear
 
 State 0
 
-    0 $accept: . prog $end
+    0 $accept: • prog $end
 
     DOWN       shift, and go to state 1
     UP         shift, and go to state 2
@@ -186,21 +186,21 @@ State 0
 
 State 1
 
-   36 instr: DOWN .
+   36 instr: DOWN •
 
     $default  reduce using rule 36 (instr)
 
 
 State 2
 
-   37 instr: UP .
+   37 instr: UP •
 
     $default  reduce using rule 37 (instr)
 
 
 State 3
 
-   38 instr: CHANGECOL . color
+   38 instr: CHANGECOL • color
 
     BLACK     shift, and go to state 21
     WHITE     shift, and go to state 22
@@ -220,7 +220,7 @@ State 3
 
 State 4
 
-   40 instr: ROTATE . expr
+   40 instr: ROTATE • expr
 
     LPAR      shift, and go to state 29
     CONSTANT  shift, and go to state 30
@@ -231,7 +231,7 @@ State 4
 
 State 5
 
-   39 instr: FORWARD . expr
+   39 instr: FORWARD • expr
 
     LPAR      shift, and go to state 29
     CONSTANT  shift, and go to state 30
@@ -242,14 +242,14 @@ State 5
 
 State 6
 
-   31 for_loop: FOR . VARIABLE TO expr DO seq ENDFOR
+   31 for_loop: FOR • VARIABLE TO expr DO seq ENDFOR
 
     VARIABLE  shift, and go to state 36
 
 
 State 7
 
-   32 while_loop: WHILE . cond DO seq ENDWHILE
+   32 while_loop: WHILE • cond DO seq ENDWHILE
 
     NOT       shift, and go to state 37
     LPAR      shift, and go to state 29
@@ -262,8 +262,8 @@ State 7
 
 State 8
 
-   29 conditional: IF . cond DO seq ENDIF
-   30            | IF . cond DO seq ELSE DO seq ENDIF
+   29 conditional: IF • cond DO seq ENDIF
+   30            | IF • cond DO seq ELSE DO seq ENDIF
 
     NOT       shift, and go to state 37
     LPAR      shift, and go to state 29
@@ -276,7 +276,7 @@ State 8
 
 State 9
 
-   41 instr: LINE . expr
+   41 instr: LINE • expr
 
     LPAR      shift, and go to state 29
     CONSTANT  shift, and go to state 30
@@ -287,7 +287,7 @@ State 9
 
 State 10
 
-   42 instr: RECTANGLE . expr expr
+   42 instr: RECTANGLE • expr expr
 
     LPAR      shift, and go to state 29
     CONSTANT  shift, and go to state 30
@@ -298,70 +298,70 @@ State 10
 
 State 11
 
-   28 affectation: VARIABLE . AFFECT expr
+   28 affectation: VARIABLE • AFFECT expr
 
     AFFECT  shift, and go to state 43
 
 
 State 12
 
-    0 $accept: prog . $end
+    0 $accept: prog • $end
 
     $end  shift, and go to state 44
 
 
 State 13
 
-    1 prog: seq .
+    1 prog: seq •
 
     $default  reduce using rule 1 (prog)
 
 
 State 14
 
-   44 instr: affectation .
+   44 instr: affectation •
 
     $default  reduce using rule 44 (instr)
 
 
 State 15
 
-   35 control_struct: conditional .
+   35 control_struct: conditional •
 
     $default  reduce using rule 35 (control_struct)
 
 
 State 16
 
-   33 control_struct: for_loop .
+   33 control_struct: for_loop •
 
     $default  reduce using rule 33 (control_struct)
 
 
 State 17
 
-   34 control_struct: while_loop .
+   34 control_struct: while_loop •
 
     $default  reduce using rule 34 (control_struct)
 
 
 State 18
 
-   43 instr: control_struct .
+   43 instr: control_struct •
 
     $default  reduce using rule 43 (instr)
 
 
 State 19
 
-   45 line: instr . ENDLINE
+   45 line: instr • ENDLINE
 
     ENDLINE  shift, and go to state 45
 
 
 State 20
 
-    2 seq: line . seq
+    2 seq: line • seq
 
     DOWN       shift, and go to state 1
     UP         shift, and go to state 2
@@ -389,63 +389,63 @@ State 20
 
 State 21
 
-    4 color: BLACK .
+    4 color: BLACK •
 
     $default  reduce using rule 4 (color)
 
 
 State 22
 
-    5 color: WHITE .
+    5 color: WHITE •
 
     $default  reduce using rule 5 (color)
 
 
 State 23
 
-    6 color: RED .
+    6 color: RED •
 
     $default  reduce using rule 6 (color)
 
 
 State 24
 
-    7 color: GREEN .
+    7 color: GREEN •
 
     $default  reduce using rule 7 (color)
 
 
 State 25
 
-    8 color: BLUE .
+    8 color: BLUE •
 
     $default  reduce using rule 8 (color)
 
 
 State 26
 
-    9 color: YELLOW .
+    9 color: YELLOW •
 
     $default  reduce using rule 9 (color)
 
 
 State 27
 
-   10 color: PURPLE .
+   10 color: PURPLE •
 
     $default  reduce using rule 10 (color)
 
 
 State 28
 
-   11 color: CYAN .
+   11 color: CYAN •
 
     $default  reduce using rule 11 (color)
 
 
 State 29
 
-   19 expr: LPAR . expr RPAR
+   19 expr: LPAR • expr RPAR
 
     LPAR      shift, and go to state 29
     CONSTANT  shift, and go to state 30
@@ -456,32 +456,32 @@ State 29
 
 State 30
 
-   13 expr: CONSTANT .
+   13 expr: CONSTANT •
 
     $default  reduce using rule 13 (expr)
 
 
 State 31
 
-   14 expr: VARIABLE .
+   14 expr: VARIABLE •
 
     $default  reduce using rule 14 (expr)
 
 
 State 32
 
-   38 instr: CHANGECOL color .
+   38 instr: CHANGECOL color •
 
     $default  reduce using rule 38 (instr)
 
 
 State 33
 
-   12 color: expr . expr expr
-   15 expr: expr . PLUS expr
-   16     | expr . TIMES expr
-   17     | expr . MINUS expr
-   18     | expr . DIVIDE expr
+   12 color: expr • expr expr
+   15 expr: expr • PLUS expr
+   16     | expr • TIMES expr
+   17     | expr • MINUS expr
+   18     | expr • DIVIDE expr
 
     PLUS      shift, and go to state 48
     MINUS     shift, and go to state 49
@@ -496,11 +496,11 @@ State 33
 
 State 34
 
-   15 expr: expr . PLUS expr
-   16     | expr . TIMES expr
-   17     | expr . MINUS expr
-   18     | expr . DIVIDE expr
-   40 instr: ROTATE expr .
+   15 expr: expr • PLUS expr
+   16     | expr • TIMES expr
+   17     | expr • MINUS expr
+   18     | expr • DIVIDE expr
+   40 instr: ROTATE expr •
 
     PLUS    shift, and go to state 48
     MINUS   shift, and go to state 49
@@ -512,11 +512,11 @@ State 34
 
 State 35
 
-   15 expr: expr . PLUS expr
-   16     | expr . TIMES expr
-   17     | expr . MINUS expr
-   18     | expr . DIVIDE expr
-   39 instr: FORWARD expr .
+   15 expr: expr • PLUS expr
+   16     | expr • TIMES expr
+   17     | expr • MINUS expr
+   18     | expr • DIVIDE expr
+   39 instr: FORWARD expr •
 
     PLUS    shift, and go to state 48
     MINUS   shift, and go to state 49
@@ -528,14 +528,14 @@ State 35
 
 State 36
 
-   31 for_loop: FOR VARIABLE . TO expr DO seq ENDFOR
+   31 for_loop: FOR VARIABLE • TO expr DO seq ENDFOR
 
     TO  shift, and go to state 53
 
 
 State 37
 
-   27 cond: NOT . cond
+   27 cond: NOT • cond
 
     NOT       shift, and go to state 37
     LPAR      shift, and go to state 29
@@ -548,15 +548,15 @@ State 37
 
 State 38
 
-   15 expr: expr . PLUS expr
-   16     | expr . TIMES expr
-   17     | expr . MINUS expr
-   18     | expr . DIVIDE expr
-   20 cond: expr . GT expr
-   21     | expr . GEQ expr
-   22     | expr . LT expr
-   23     | expr . LEQ expr
-   24     | expr . EQ expr
+   15 expr: expr • PLUS expr
+   16     | expr • TIMES expr
+   17     | expr • MINUS expr
+   18     | expr • DIVIDE expr
+   20 cond: expr • GT expr
+   21     | expr • GEQ expr
+   22     | expr • LT expr
+   23     | expr • LEQ expr
+   24     | expr • EQ expr
 
     GT      shift, and go to state 55
     GEQ     shift, and go to state 56
@@ -571,9 +571,9 @@ State 38
 
 State 39
 
-   25 cond: cond . AND cond
-   26     | cond . OR cond
-   32 while_loop: WHILE cond . DO seq ENDWHILE
+   25 cond: cond • AND cond
+   26     | cond • OR cond
+   32 while_loop: WHILE cond • DO seq ENDWHILE
 
     DO   shift, and go to state 60
     AND  shift, and go to state 61
@@ -582,10 +582,10 @@ State 39
 
 State 40
 
-   25 cond: cond . AND cond
-   26     | cond . OR cond
-   29 conditional: IF cond . DO seq ENDIF
-   30            | IF cond . DO seq ELSE DO seq ENDIF
+   25 cond: cond • AND cond
+   26     | cond • OR cond
+   29 conditional: IF cond • DO seq ENDIF
+   30            | IF cond • DO seq ELSE DO seq ENDIF
 
     DO   shift, and go to state 63
     AND  shift, and go to state 61
@@ -594,11 +594,11 @@ State 40
 
 State 41
 
-   15 expr: expr . PLUS expr
-   16     | expr . TIMES expr
-   17     | expr . MINUS expr
-   18     | expr . DIVIDE expr
-   41 instr: LINE expr .
+   15 expr: expr • PLUS expr
+   16     | expr • TIMES expr
+   17     | expr • MINUS expr
+   18     | expr • DIVIDE expr
+   41 instr: LINE expr •
 
     PLUS    shift, and go to state 48
     MINUS   shift, and go to state 49
@@ -610,11 +610,11 @@ State 41
 
 State 42
 
-   15 expr: expr . PLUS expr
-   16     | expr . TIMES expr
-   17     | expr . MINUS expr
-   18     | expr . DIVIDE expr
-   42 instr: RECTANGLE expr . expr
+   15 expr: expr • PLUS expr
+   16     | expr • TIMES expr
+   17     | expr • MINUS expr
+   18     | expr • DIVIDE expr
+   42 instr: RECTANGLE expr • expr
 
     PLUS      shift, and go to state 48
     MINUS     shift, and go to state 49
@@ -629,7 +629,7 @@ State 42
 
 State 43
 
-   28 affectation: VARIABLE AFFECT . expr
+   28 affectation: VARIABLE AFFECT • expr
 
     LPAR      shift, and go to state 29
     CONSTANT  shift, and go to state 30
@@ -640,32 +640,32 @@ State 43
 
 State 44
 
-    0 $accept: prog $end .
+    0 $accept: prog $end •
 
     $default  accept
 
 
 State 45
 
-   45 line: instr ENDLINE .
+   45 line: instr ENDLINE •
 
     $default  reduce using rule 45 (line)
 
 
 State 46
 
-    2 seq: line seq .
+    2 seq: line seq •
 
     $default  reduce using rule 2 (seq)
 
 
 State 47
 
-   15 expr: expr . PLUS expr
-   16     | expr . TIMES expr
-   17     | expr . MINUS expr
-   18     | expr . DIVIDE expr
-   19     | LPAR expr . RPAR
+   15 expr: expr • PLUS expr
+   16     | expr • TIMES expr
+   17     | expr • MINUS expr
+   18     | expr • DIVIDE expr
+   19     | LPAR expr • RPAR
 
     PLUS    shift, and go to state 48
     MINUS   shift, and go to state 49
@@ -676,7 +676,7 @@ State 47
 
 State 48
 
-   15 expr: expr PLUS . expr
+   15 expr: expr PLUS • expr
 
     LPAR      shift, and go to state 29
     CONSTANT  shift, and go to state 30
@@ -687,7 +687,7 @@ State 48
 
 State 49
 
-   17 expr: expr MINUS . expr
+   17 expr: expr MINUS • expr
 
     LPAR      shift, and go to state 29
     CONSTANT  shift, and go to state 30
@@ -698,7 +698,7 @@ State 49
 
 State 50
 
-   16 expr: expr TIMES . expr
+   16 expr: expr TIMES • expr
 
     LPAR      shift, and go to state 29
     CONSTANT  shift, and go to state 30
@@ -709,7 +709,7 @@ State 50
 
 State 51
 
-   18 expr: expr DIVIDE . expr
+   18 expr: expr DIVIDE • expr
 
     LPAR      shift, and go to state 29
     CONSTANT  shift, and go to state 30
@@ -720,11 +720,11 @@ State 51
 
 State 52
 
-   12 color: expr expr . expr
-   15 expr: expr . PLUS expr
-   16     | expr . TIMES expr
-   17     | expr . MINUS expr
-   18     | expr . DIVIDE expr
+   12 color: expr expr • expr
+   15 expr: expr • PLUS expr
+   16     | expr • TIMES expr
+   17     | expr • MINUS expr
+   18     | expr • DIVIDE expr
 
     PLUS      shift, and go to state 48
     MINUS     shift, and go to state 49
@@ -739,7 +739,7 @@ State 52
 
 State 53
 
-   31 for_loop: FOR VARIABLE TO . expr DO seq ENDFOR
+   31 for_loop: FOR VARIABLE TO • expr DO seq ENDFOR
 
     LPAR      shift, and go to state 29
     CONSTANT  shift, and go to state 30
@@ -750,9 +750,9 @@ State 53
 
 State 54
 
-   25 cond: cond . AND cond
-   26     | cond . OR cond
-   27     | NOT cond .
+   25 cond: cond • AND cond
+   26     | cond • OR cond
+   27     | NOT cond •
 
     AND  shift, and go to state 61
     OR   shift, and go to state 62
@@ -764,7 +764,7 @@ State 54
 
 State 55
 
-   20 cond: expr GT . expr
+   20 cond: expr GT • expr
 
     LPAR      shift, and go to state 29
     CONSTANT  shift, and go to state 30
@@ -775,7 +775,7 @@ State 55
 
 State 56
 
-   21 cond: expr GEQ . expr
+   21 cond: expr GEQ • expr
 
     LPAR      shift, and go to state 29
     CONSTANT  shift, and go to state 30
@@ -786,7 +786,7 @@ State 56
 
 State 57
 
-   22 cond: expr LT . expr
+   22 cond: expr LT • expr
 
     LPAR      shift, and go to state 29
     CONSTANT  shift, and go to state 30
@@ -797,7 +797,7 @@ State 57
 
 State 58
 
-   23 cond: expr LEQ . expr
+   23 cond: expr LEQ • expr
 
     LPAR      shift, and go to state 29
     CONSTANT  shift, and go to state 30
@@ -808,7 +808,7 @@ State 58
 
 State 59
 
-   24 cond: expr EQ . expr
+   24 cond: expr EQ • expr
 
     LPAR      shift, and go to state 29
     CONSTANT  shift, and go to state 30
@@ -819,7 +819,7 @@ State 59
 
 State 60
 
-   32 while_loop: WHILE cond DO . seq ENDWHILE
+   32 while_loop: WHILE cond DO • seq ENDWHILE
 
     DOWN       shift, and go to state 1
     UP         shift, and go to state 2
@@ -847,7 +847,7 @@ State 60
 
 State 61
 
-   25 cond: cond AND . cond
+   25 cond: cond AND • cond
 
     NOT       shift, and go to state 37
     LPAR      shift, and go to state 29
@@ -860,7 +860,7 @@ State 61
 
 State 62
 
-   26 cond: cond OR . cond
+   26 cond: cond OR • cond
 
     NOT       shift, and go to state 37
     LPAR      shift, and go to state 29
@@ -873,8 +873,8 @@ State 62
 
 State 63
 
-   29 conditional: IF cond DO . seq ENDIF
-   30            | IF cond DO . seq ELSE DO seq ENDIF
+   29 conditional: IF cond DO • seq ENDIF
+   30            | IF cond DO • seq ELSE DO seq ENDIF
 
     DOWN       shift, and go to state 1
     UP         shift, and go to state 2
@@ -902,11 +902,11 @@ State 63
 
 State 64
 
-   15 expr: expr . PLUS expr
-   16     | expr . TIMES expr
-   17     | expr . MINUS expr
-   18     | expr . DIVIDE expr
-   42 instr: RECTANGLE expr expr .
+   15 expr: expr • PLUS expr
+   16     | expr • TIMES expr
+   17     | expr • MINUS expr
+   18     | expr • DIVIDE expr
+   42 instr: RECTANGLE expr expr •
 
     PLUS    shift, and go to state 48
     MINUS   shift, and go to state 49
@@ -918,11 +918,11 @@ State 64
 
 State 65
 
-   15 expr: expr . PLUS expr
-   16     | expr . TIMES expr
-   17     | expr . MINUS expr
-   18     | expr . DIVIDE expr
-   28 affectation: VARIABLE AFFECT expr .
+   15 expr: expr • PLUS expr
+   16     | expr • TIMES expr
+   17     | expr • MINUS expr
+   18     | expr • DIVIDE expr
+   28 affectation: VARIABLE AFFECT expr •
 
     PLUS    shift, and go to state 48
     MINUS   shift, and go to state 49
@@ -934,18 +934,18 @@ State 65
 
 State 66
 
-   19 expr: LPAR expr RPAR .
+   19 expr: LPAR expr RPAR •
 
     $default  reduce using rule 19 (expr)
 
 
 State 67
 
-   15 expr: expr . PLUS expr
-   15     | expr PLUS expr .
-   16     | expr . TIMES expr
-   17     | expr . MINUS expr
-   18     | expr . DIVIDE expr
+   15 expr: expr • PLUS expr
+   15     | expr PLUS expr •
+   16     | expr • TIMES expr
+   17     | expr • MINUS expr
+   18     | expr • DIVIDE expr
 
     TIMES   shift, and go to state 50
     DIVIDE  shift, and go to state 51
@@ -955,11 +955,11 @@ State 67
 
 State 68
 
-   15 expr: expr . PLUS expr
-   16     | expr . TIMES expr
-   17     | expr . MINUS expr
-   17     | expr MINUS expr .
-   18     | expr . DIVIDE expr
+   15 expr: expr • PLUS expr
+   16     | expr • TIMES expr
+   17     | expr • MINUS expr
+   17     | expr MINUS expr •
+   18     | expr • DIVIDE expr
 
     TIMES   shift, and go to state 50
     DIVIDE  shift, and go to state 51
@@ -969,33 +969,33 @@ State 68
 
 State 69
 
-   15 expr: expr . PLUS expr
-   16     | expr . TIMES expr
-   16     | expr TIMES expr .
-   17     | expr . MINUS expr
-   18     | expr . DIVIDE expr
+   15 expr: expr • PLUS expr
+   16     | expr • TIMES expr
+   16     | expr TIMES expr •
+   17     | expr • MINUS expr
+   18     | expr • DIVIDE expr
 
     $default  reduce using rule 16 (expr)
 
 
 State 70
 
-   15 expr: expr . PLUS expr
-   16     | expr . TIMES expr
-   17     | expr . MINUS expr
-   18     | expr . DIVIDE expr
-   18     | expr DIVIDE expr .
+   15 expr: expr • PLUS expr
+   16     | expr • TIMES expr
+   17     | expr • MINUS expr
+   18     | expr • DIVIDE expr
+   18     | expr DIVIDE expr •
 
     $default  reduce using rule 18 (expr)
 
 
 State 71
 
-   12 color: expr expr expr .
-   15 expr: expr . PLUS expr
-   16     | expr . TIMES expr
-   17     | expr . MINUS expr
-   18     | expr . DIVIDE expr
+   12 color: expr expr expr •
+   15 expr: expr • PLUS expr
+   16     | expr • TIMES expr
+   17     | expr • MINUS expr
+   18     | expr • DIVIDE expr
 
     PLUS    shift, and go to state 48
     MINUS   shift, and go to state 49
@@ -1007,11 +1007,11 @@ State 71
 
 State 72
 
-   15 expr: expr . PLUS expr
-   16     | expr . TIMES expr
-   17     | expr . MINUS expr
-   18     | expr . DIVIDE expr
-   31 for_loop: FOR VARIABLE TO expr . DO seq ENDFOR
+   15 expr: expr • PLUS expr
+   16     | expr • TIMES expr
+   17     | expr • MINUS expr
+   18     | expr • DIVIDE expr
+   31 for_loop: FOR VARIABLE TO expr • DO seq ENDFOR
 
     DO      shift, and go to state 82
     PLUS    shift, and go to state 48
@@ -1022,11 +1022,11 @@ State 72
 
 State 73
 
-   15 expr: expr . PLUS expr
-   16     | expr . TIMES expr
-   17     | expr . MINUS expr
-   18     | expr . DIVIDE expr
-   20 cond: expr GT expr .
+   15 expr: expr • PLUS expr
+   16     | expr • TIMES expr
+   17     | expr • MINUS expr
+   18     | expr • DIVIDE expr
+   20 cond: expr GT expr •
 
     PLUS    shift, and go to state 48
     MINUS   shift, and go to state 49
@@ -1038,11 +1038,11 @@ State 73
 
 State 74
 
-   15 expr: expr . PLUS expr
-   16     | expr . TIMES expr
-   17     | expr . MINUS expr
-   18     | expr . DIVIDE expr
-   21 cond: expr GEQ expr .
+   15 expr: expr • PLUS expr
+   16     | expr • TIMES expr
+   17     | expr • MINUS expr
+   18     | expr • DIVIDE expr
+   21 cond: expr GEQ expr •
 
     PLUS    shift, and go to state 48
     MINUS   shift, and go to state 49
@@ -1054,11 +1054,11 @@ State 74
 
 State 75
 
-   15 expr: expr . PLUS expr
-   16     | expr . TIMES expr
-   17     | expr . MINUS expr
-   18     | expr . DIVIDE expr
-   22 cond: expr LT expr .
+   15 expr: expr • PLUS expr
+   16     | expr • TIMES expr
+   17     | expr • MINUS expr
+   18     | expr • DIVIDE expr
+   22 cond: expr LT expr •
 
     PLUS    shift, and go to state 48
     MINUS   shift, and go to state 49
@@ -1070,11 +1070,11 @@ State 75
 
 State 76
 
-   15 expr: expr . PLUS expr
-   16     | expr . TIMES expr
-   17     | expr . MINUS expr
-   18     | expr . DIVIDE expr
-   23 cond: expr LEQ expr .
+   15 expr: expr • PLUS expr
+   16     | expr • TIMES expr
+   17     | expr • MINUS expr
+   18     | expr • DIVIDE expr
+   23 cond: expr LEQ expr •
 
     PLUS    shift, and go to state 48
     MINUS   shift, and go to state 49
@@ -1086,11 +1086,11 @@ State 76
 
 State 77
 
-   15 expr: expr . PLUS expr
-   16     | expr . TIMES expr
-   17     | expr . MINUS expr
-   18     | expr . DIVIDE expr
-   24 cond: expr EQ expr .
+   15 expr: expr • PLUS expr
+   16     | expr • TIMES expr
+   17     | expr • MINUS expr
+   18     | expr • DIVIDE expr
+   24 cond: expr EQ expr •
 
     PLUS    shift, and go to state 48
     MINUS   shift, and go to state 49
@@ -1102,16 +1102,16 @@ State 77
 
 State 78
 
-   32 while_loop: WHILE cond DO seq . ENDWHILE
+   32 while_loop: WHILE cond DO seq • ENDWHILE
 
     ENDWHILE  shift, and go to state 83
 
 
 State 79
 
-   25 cond: cond . AND cond
-   25     | cond AND cond .
-   26     | cond . OR cond
+   25 cond: cond • AND cond
+   25     | cond AND cond •
+   26     | cond • OR cond
 
     AND  shift, and go to state 61
     OR   shift, and go to state 62
@@ -1123,9 +1123,9 @@ State 79
 
 State 80
 
-   25 cond: cond . AND cond
-   26     | cond . OR cond
-   26     | cond OR cond .
+   25 cond: cond • AND cond
+   26     | cond • OR cond
+   26     | cond OR cond •
 
     AND  shift, and go to state 61
     OR   shift, and go to state 62
@@ -1137,8 +1137,8 @@ State 80
 
 State 81
 
-   29 conditional: IF cond DO seq . ENDIF
-   30            | IF cond DO seq . ELSE DO seq ENDIF
+   29 conditional: IF cond DO seq • ENDIF
+   30            | IF cond DO seq • ELSE DO seq ENDIF
 
     ELSE   shift, and go to state 84
     ENDIF  shift, and go to state 85
@@ -1146,7 +1146,7 @@ State 81
 
 State 82
 
-   31 for_loop: FOR VARIABLE TO expr DO . seq ENDFOR
+   31 for_loop: FOR VARIABLE TO expr DO • seq ENDFOR
 
     DOWN       shift, and go to state 1
     UP         shift, and go to state 2
@@ -1174,35 +1174,35 @@ State 82
 
 State 83
 
-   32 while_loop: WHILE cond DO seq ENDWHILE .
+   32 while_loop: WHILE cond DO seq ENDWHILE •
 
     $default  reduce using rule 32 (while_loop)
 
 
 State 84
 
-   30 conditional: IF cond DO seq ELSE . DO seq ENDIF
+   30 conditional: IF cond DO seq ELSE • DO seq ENDIF
 
     DO  shift, and go to state 87
 
 
 State 85
 
-   29 conditional: IF cond DO seq ENDIF .
+   29 conditional: IF cond DO seq ENDIF •
 
     $default  reduce using rule 29 (conditional)
 
 
 State 86
 
-   31 for_loop: FOR VARIABLE TO expr DO seq . ENDFOR
+   31 for_loop: FOR VARIABLE TO expr DO seq • ENDFOR
 
     ENDFOR  shift, and go to state 88
 
 
 State 87
 
-   30 conditional: IF cond DO seq ELSE DO . seq ENDIF
+   30 conditional: IF cond DO seq ELSE DO • seq ENDIF
 
     DOWN       shift, and go to state 1
     UP         shift, and go to state 2
@@ -1230,20 +1230,20 @@ State 87
 
 State 88
 
-   31 for_loop: FOR VARIABLE TO expr DO seq ENDFOR .
+   31 for_loop: FOR VARIABLE TO expr DO seq ENDFOR •
 
     $default  reduce using rule 31 (for_loop)
 
 
 State 89
 
-   30 conditional: IF cond DO seq ELSE DO seq . ENDIF
+   30 conditional: IF cond DO seq ELSE DO seq • ENDIF
 
     ENDIF  shift, and go to state 90
 
 
 State 90
 
-   30 conditional: IF cond DO seq ELSE DO seq ENDIF .
+   30 conditional: IF cond DO seq ELSE DO seq ENDIF •
 
     $default  reduce using rule 30 (conditional)

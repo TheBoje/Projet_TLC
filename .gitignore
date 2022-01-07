@@ -5,3 +5,4 @@ prog
 clurtle
 .idea
 .vscode
+*.output
