@@ -5,20 +5,21 @@
 
 #include "instr.hh"
 #include "expr.hh"
+#include "seq.hh"
 
 namespace clurtle {
     class for_loop : public instr {
-        std::string _var;
+        variable * _var;
         expr *      _to;
-        instr *     _body;
+        seq_item *     _body;
 
     public:
-        for_loop(std::string var, expr * to, instr * body);
+        for_loop(variable * var, expr * to, seq_item * body);
         ~for_loop();
 
-        inline std::string get_var() const { return _var; }
+        inline variable * get_var() const { return _var; }
         inline expr * get_to() const {return _to; }
-        inline instr * get_body() const { return _body; }
+        inline seq_item * get_body() const { return _body; }
 
         void visit(visitor & v) const;    
     };

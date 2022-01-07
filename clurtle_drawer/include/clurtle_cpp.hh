@@ -15,6 +15,7 @@ namespace clurtle {
         int _pos_x;
         int _pos_y;
         int _rot;
+        int _indent;
         
     public:
         clurtle_cpp(std::string filename);
@@ -36,6 +37,7 @@ namespace clurtle {
         void visit_variable(const variable * v);
         void visit_affectation(const affectation * a);
         void visit_sequence(const sequence * s);
+        void visit_seq_item(const seq_item * si);
     };
 }
 

@@ -19,6 +19,7 @@ namespace clurtle {
     class variable;
     class affectation;
     class sequence;
+    class seq_item;
 
     class visitor  {
     public:
@@ -38,6 +39,7 @@ namespace clurtle {
         virtual void visit_variable(const variable * v) = 0;
         virtual void visit_affectation(const affectation * a) = 0;
         virtual void visit_sequence(const sequence * s) = 0;
+        virtual void visit_seq_item(const seq_item * si) = 0;
     };
 
 }

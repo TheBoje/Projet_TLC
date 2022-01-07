@@ -1,6 +1,6 @@
 #include "while_loop.hh"
 
-clurtle::while_loop::while_loop(expr * cond, instr * body) :
+clurtle::while_loop::while_loop(expr * cond, seq_item * body) :
     _cond(cond),
     _body(body)
 {}

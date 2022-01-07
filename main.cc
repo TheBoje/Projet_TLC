@@ -8,8 +8,8 @@
 
 
 int main() {
-    clurtle::sequence * s;
-    yyparse(s);
+    clurtle::sequence * s = NULL;
+    int res = yyparse(&s);
     #define DEBUG_L
     #ifdef DEBUG_L
 
@@ -17,7 +17,7 @@ int main() {
     if (s != nullptr) {
         s->visit(clurtle);
     } else {
-        std::cout << "parsing failed!" << std::endl;
+        std::cout << "res not found" << std::endl;
     }
 
     #endif 
