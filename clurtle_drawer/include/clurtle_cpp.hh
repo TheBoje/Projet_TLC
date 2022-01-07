@@ -15,6 +15,7 @@ namespace clurtle {
         int _pos_x;
         int _pos_y;
         int _rot;
+        int _indent;
         
     public:
         clurtle_cpp(std::string filename);

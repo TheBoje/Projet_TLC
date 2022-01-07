@@ -1,5 +1,6 @@
 %{
 #include <iostream>
+#include <string>
 extern "C" int yylex();
 
 #include "clurtle_drawer/include/seq.hh"
@@ -75,11 +76,11 @@ extern "C" void yyerror(clurtle::sequence ** res, const char* message);
 
 %%
 
-prog: seq { *res = $$ = new sequence($1); } 
+prog: seq { *res = new sequence($1); } 
 ;
 
 seq: line seq { $$ = new seq_item($1, $2); }
-| {}
+| { $$ = nullptr; }
 ;
 
 color: BLACK     { $$ = new color(new constant(  0), new constant(  0), new constant(  0)); }
@@ -95,7 +96,7 @@ color: BLACK     { $$ = new color(new constant(  0), new constant(  0), new cons
 
 
 expr: CONSTANT      { $$ = new constant(yylval.cst); }
-| VARIABLE          { $$ = new variable(yylval.var); }
+| VARIABLE          { $$ = new variable($1); }
 | expr PLUS expr    { $$ = new ope(OP_PLUS, $1, $3); }
 | expr TIMES expr   { $$ = new ope(OP_TIMES, $1, $3); }
 | expr MINUS expr   { $$ = new ope(OP_MINUS, $1, $3); }
@@ -113,14 +114,14 @@ cond: expr GT expr  { $$ = new ope(OP_GT, $1, $3); }
 | NOT cond          { $$ = new ope(OP_NOT, $2, nullptr); }
 ;
 
-affectation: VARIABLE AFFECT expr { $$ = new affectation(new variable(yylval.var), $3); }
+affectation: VARIABLE AFFECT expr { $$ = new affectation(new variable($1), $3); }
 ;
 
 conditional: IF cond DO seq ENDIF { $$ = new conditional($2, $4); }
 | IF cond DO seq ELSE DO seq ENDIF { $$ = new conditional($2, $4, $7); }
 ;
 
-for_loop: FOR VARIABLE TO expr DO seq ENDFOR { $$ = new for_loop(new variable(yylval.var), $4, $6); }
+for_loop: FOR VARIABLE TO expr DO seq ENDFOR { $$ = new for_loop(new variable($2), $4, $6); }
 ;
 
 while_loop: WHILE cond DO seq ENDWHILE { $$ = new while_loop($2, $4); }

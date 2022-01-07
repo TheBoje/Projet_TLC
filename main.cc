@@ -9,10 +9,7 @@
 
 int main() {
     clurtle::sequence * s = NULL;
-    std::cout << "s before parse : " << s << std::endl;
     int res = yyparse(&s);
-    std::cout << "s after parse : " << s << std::endl;
-    std::cout << "parsing code : " << res << std::endl;
     #define DEBUG_L
     #ifdef DEBUG_L
 

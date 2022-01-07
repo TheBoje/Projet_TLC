@@ -5,35 +5,13 @@ BAISSER;
 # Dessine le quadrilataire
 RECTANGLE 10 6;
 
-### Correspond à :
-BAISSER;
-AVANCER 10;
-TOURNER 90;
-AVANCER 6;
-TOURNER 90;
-AVANCER 10;
-TOURNER 90;
-AVANCER 6;
-TOURNER 90;
-###
-
 LEVER;
 AVANCER 5;
 CHANGER_COULEUR VERT;
 TOURNER 90;
 
-# Dessine la verticale
 LIGNE 6;
 
-### Correspond à :
-BAISSER
-AVANCER 6;
-LEVER;
-TOURNER 180;
-AVANCER 6;
-TOURNER 180;
-BAISSER;
-###
 
 LEVER;
 TOURNER 90;
@@ -43,5 +21,4 @@ AVANCER 3;
 CHANGER_COULEUR 255 0 0;
 TOURNER -90;
 
-# Dessine la ligne horizontale
 LIGNE 10;
