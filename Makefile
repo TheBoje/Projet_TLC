@@ -42,7 +42,7 @@ SRCH=clurtle_drawer/include/affectation.hh \
 	clurtle_drawer/include/clurle_cpp.hh \
 	clurtle_drawer/include/clurtle.hh
 OBJ=$(SRC:.cc=.o)
-CXXFLAGS=-g -lfl -Wall -Wpedantic -Iclurtle_drawer/include -Iclurtle_drawer/src
+CXXFLAGS=-g -lfl -Wall -Wpedantic -Iclurtle_drawer/include -Iclurtle_drawer/src -L/usr/X11R6/lib -lm -lpthread -lX11
 
 clurtle: $(OBJ)
 	$(CXX) $(CXXFLAGS) -o $@ $(OBJ)

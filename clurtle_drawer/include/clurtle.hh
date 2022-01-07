@@ -4,6 +4,7 @@
 #include <map>
 #include <array>
 #include <vector>
+#include <string>
 
 #include "visitor.hh"
 #include "CImg.h"
