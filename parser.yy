@@ -53,7 +53,7 @@ extern "C" void yyerror(clurtle::sequence ** res, const char* message);
 
 %token DOWN UP CHANGECOL
 %token ROTATE FORWARD
-%token FOR TO ENDFOR WHILE ENDWHILE IF ELSE ENDIF DO
+%token FOR TO ENDFOR WHILE ENDWHILE IF ELSE ENDIF DO FROM
 %token LINE RECTANGLE
 %token GT GEQ LT LEQ EQ AND OR NOT
 %token BLACK WHITE RED GREEN BLUE YELLOW PURPLE CYAN
@@ -121,7 +121,7 @@ conditional: IF cond DO seq ENDIF { $$ = new conditional($2, $4); }
 | IF cond DO seq ELSE DO seq ENDIF { $$ = new conditional($2, $4, $7); }
 ;
 
-for_loop: FOR VARIABLE TO expr DO seq ENDFOR { $$ = new for_loop(new variable($2), $4, $6); }
+for_loop: FOR VARIABLE FROM expr TO expr DO seq ENDFOR { $$ = new for_loop(new variable($2), $4,$6, $8); }
 ;
 
 while_loop: WHILE cond DO seq ENDWHILE { $$ = new while_loop($2, $4); }

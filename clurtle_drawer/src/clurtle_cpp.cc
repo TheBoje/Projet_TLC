@@ -111,7 +111,9 @@ namespace clurtle {
     }
 
     void clurtle_cpp::visit_for_loop(const for_loop * fl) {
-        std::cout << std::string(_indent, '\t') << "FOR ( let " << fl->get_var()->get_name() << " = 0; " << fl->get_var()->get_name() << " < ";
+        std::cout << std::string(_indent, '\t') << "FOR ( let " << fl->get_var()->get_name() << " = ";
+        fl->get_from()->visit(*this);
+        std::cout << "; " << fl->get_var()->get_name() << " < ";
         fl->get_to()->visit(*this);
         std::cout << ") {" << std::endl;
         _indent++;

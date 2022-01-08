@@ -1,7 +1,8 @@
 #include "for_loop.hh"
 
-clurtle::for_loop::for_loop(variable * var, expr * to, seq_item * body) :
+clurtle::for_loop::for_loop(variable * var, expr * from, expr * to, seq_item * body) :
     _var(var),
+    _from(from),
     _to(to),
     _body(body)
 {}

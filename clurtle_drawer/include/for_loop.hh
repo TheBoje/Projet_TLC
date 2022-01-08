@@ -10,14 +10,16 @@
 namespace clurtle {
     class for_loop : public instr {
         variable * _var;
-        expr *      _to;
-        seq_item *     _body;
+        expr *     _from;
+        expr *     _to;
+        seq_item * _body;
 
     public:
-        for_loop(variable * var, expr * to, seq_item * body);
+        for_loop(variable * var, expr * from, expr * to, seq_item * body);
         ~for_loop();
 
         inline variable * get_var() const { return _var; }
+        inline expr * get_from() const { return _from; }
         inline expr * get_to() const {return _to; }
         inline seq_item * get_body() const { return _body; }
 

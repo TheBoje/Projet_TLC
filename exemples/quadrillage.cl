@@ -1,7 +1,7 @@
 hauteur <- 10;
 largeur <- 20;
 
-POUR x ALLANT_A largeur FAIRE
+POUR x DE 0 ALLANT_A largeur FAIRE
     TOURNER 90;
     BAISSER;
     LIGNE hauteur;
@@ -14,7 +14,7 @@ TOURNER 180;
 AVANCER largeur;
 TOURNER -90;
 
-POUR y ALLANT_A hauteur FAIRE
+POUR y DE 0 ALLANT_A hauteur FAIRE
     TOURNER -90;
     BAISSER;
     LIGNE largeur;

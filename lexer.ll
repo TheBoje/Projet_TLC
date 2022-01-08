@@ -22,6 +22,7 @@ AVANCER         { return FORWARD; }
 
 POUR            { return FOR; }
 ALLANT_A        { return TO; }
+DE          { return FROM; }
 FIN_POUR        { return ENDFOR; }
 
 TANT_QUE        { return WHILE; }
