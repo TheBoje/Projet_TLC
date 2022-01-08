@@ -13,7 +13,7 @@ int main() {
     clurtle::sequence * s = NULL;
     int res = yyparse(&s);
     
-    #define DEBUG_L
+    // #define DEBUG_L
     #ifdef DEBUG_L
 
     clurtle::clurtle_cpp clurtle("out.cpp");  
@@ -25,7 +25,6 @@ int main() {
 
     #endif 
     #ifndef DEBUG_L
-    
     int sizeX = 320, sizeY = 240;
     cimg_library::CImg<unsigned char> img(sizeX, sizeY, 1, 3);
 
