@@ -13,7 +13,7 @@ int main() {
     clurtle::sequence * s = NULL;
     int res = yyparse(&s);
     
-    // #define DEBUG_L
+    #define DEBUG_L
     #ifdef DEBUG_L
 
     clurtle::clurtle_cpp clurtle("out.cpp");  

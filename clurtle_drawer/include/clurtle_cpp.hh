@@ -9,7 +9,9 @@
 
 namespace clurtle {
     class clurtle_cpp : public visitor {
-        std::ofstream _file;
+        std::ofstream _file_out;
+        std::ifstream _file_header;
+        std::ifstream _file_footer;
         bool          _pen_is_up;
         std::array<expr *, 3>  _color;
         int _pos_x;
@@ -19,7 +21,7 @@ namespace clurtle {
         
     public:
         clurtle_cpp(std::string filename);
-        clurtle_cpp();
+        ~clurtle_cpp();
 
         void visit_up(const up * u);
         void visit_down(const down * d);

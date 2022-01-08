@@ -1,0 +1,8 @@
+    while (!disp.is_closed()) 
+    {
+        // boucle des evenements
+        if (disp.key() == cimg_library::cimg::keyQ)
+        disp.close();
+        disp.wait();
+    }
+}

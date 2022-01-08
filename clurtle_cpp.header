@@ -1,0 +1,8 @@
+#include "CImg.h"
+
+int main() {
+    int sizeX = 320, sizeY = 240;
+    cimg_library::CImg<unsigned char> img(sizeX, sizeY, 1, 3);
+
+    cimg_library::CImgDisplay disp;
+
