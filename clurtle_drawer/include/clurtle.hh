@@ -34,7 +34,8 @@ namespace clurtle {
         }
 
     public:
-        clurtle(cimg_library::CImg<unsigned char> & img);
+        clurtle(int sizex, int sizey);
+        ~clurtle();
 
         void visit_up(const up * u);
         void visit_down(const down * d);

@@ -1,6 +1,7 @@
 #include "clurtle.hh"
 
 #include <math.h>
+#include <iostream>
 
 #include "change_color.hh"
 #include "forward.hh"
@@ -18,13 +19,27 @@
 #include "color.hh"
 
 
-clurtle::clurtle::clurtle(cimg_library::CImg<unsigned char> & img) : 
+clurtle::clurtle::clurtle(int sizex, int sizey) : 
     _pen_is_up(true), 
     _color({0, 0, 0}),
-    _pos({0, 0}),
+    _pos({sizex / 2, sizey / 2}),
     _rotation(0),
-    _img(img)
+    _img(cimg_library::CImg<unsigned char>(sizex, sizey, 1, 3))
 {
+    _img.fill(255);
+}
+
+clurtle::clurtle::~clurtle() {
+    cimg_library::CImgDisplay disp;
+    disp.display(_img);
+    _img.save_bmp("toto.bmp");
+    while (!disp.is_closed()) 
+    {
+        // boucle des evenements
+        if (disp.key() == cimg_library::cimg::keyQ)
+        disp.close();
+        disp.wait();
+    }
 }
 
 void clurtle::clurtle::visit_up(const up * u) {
@@ -40,9 +55,11 @@ void clurtle::clurtle::visit_change_color(const change_color * cc) {
     cc->get_color()->visit(*this);
     cc->get_color()->visit(*this);
 
-    char r = get_last_int();
-    char g = get_last_int();
-    char b = get_last_int();
+    unsigned char b = get_last_int();
+    unsigned char g = get_last_int();
+    unsigned char r = get_last_int();
+
+    std::cout << (int)r << " " << (int)g << " " << (int)b << std::endl;
 
     _color[0] = r;
     _color[1] = g;
@@ -65,14 +82,16 @@ void clurtle::clurtle::visit_color(const color * c) {
 
 void clurtle::clurtle::visit_forward(const forward * f) {
     f->get_amount()->visit(*this);
-    
     int hyp = get_last_int();
 
-    int x = _pos[0] + hyp * cos(_rotation * (M_1_PI / 180));
-    int y = _pos[1] + hyp * sin(_rotation * (M_1_PI / 180));
+    int x = _pos[0] + hyp * cos(_rotation * (M_PI / 180));
+    int y = _pos[1] + hyp * sin(_rotation * (M_PI / 180));
 
     if(!_pen_is_up)
+    {
         _img.draw_line(_pos[0], _pos[1], x, y, _color);
+
+    }
 
     _pos[0] = x;
     _pos[1] = y;
@@ -90,8 +109,8 @@ void clurtle::clurtle::visit_line(const line * l) {
     l->get_length()->visit(*this);
     int length = get_last_int();
 
-    int x = _pos[0] + length * cos(_rotation * (M_1_PI / 180));
-    int y = _pos[1] + length * sin(_rotation * (M_1_PI / 180));
+    int x = _pos[0] + length * cos(_rotation * (M_PI / 180));
+    int y = _pos[1] + length * sin(_rotation * (M_PI / 180));
 
     _img.draw_line(_pos[0], _pos[1], x, y, _color);
 }
@@ -104,8 +123,8 @@ void clurtle::clurtle::visit_rectangle(const rectangle * r) {
 
     for(int i = 0; i < 4; i++) 
     {
-        int x = _pos[0] + (i % 2 == 0 ? length : width) * cos(_rotation * (M_1_PI / 180));
-        int y = _pos[1] + (i % 2 == 0 ? length : width) * sin(_rotation * (M_1_PI / 180));
+        int x = _pos[0] + (i % 2 == 0 ? length : width) * cos(_rotation * (M_PI / 180));
+        int y = _pos[1] + (i % 2 == 0 ? length : width) * sin(_rotation * (M_PI / 180));
 
         _img.draw_line(_pos[0], _pos[1], x, y, _color);
 
