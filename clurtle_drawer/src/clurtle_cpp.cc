@@ -1,6 +1,10 @@
 #include "clurtle_cpp.hh"
 
 #include <exception>
+#include <fstream>
+#include <iostream>
+#include <string>
+
 
 #include "change_color.hh"
 #include "forward.hh"
@@ -18,19 +22,33 @@
 #include "seq.hh"
 
 namespace clurtle {
-    clurtle_cpp::clurtle_cpp(std::string filename) : _pen_is_up(0), _pos_x(0), _pos_y(0), _rot(0), _indent(0) {
-        // try
-        // {
-        //     _file.open(filename);
-        // }
-        // catch(const std::exception& e)
-        // {
-        //     std::cerr << e.what() << '\n';
-        //     exit(EXIT_FAILURE);
-        // }
+    clurtle_cpp::clurtle_cpp(std::string filename) : _pen_is_up(0), _pos_x(0), _pos_y(0), _rot(0), _indent(1), _file_out(filename), _file_header("clurtle_cpp.header"), _file_footer("clurtle_cpp.footer") {
+        try
+        {
+            if (!_file_header.is_open() || !_file_out.is_open() || !_file_footer.is_open()) {
+                throw new std::runtime_error("cant open file " + filename + " or clurtle_cpp.header or clurtle_cpp.footer");
+            }
+
+            std::string line;
+            while ( getline(_file_header, line) )
+            {
+                _file_out << line << '\n';
+            }
+        }
+        catch(const std::exception& e)
+        {
+            std::cerr << e.what() << '\n';
+            exit(EXIT_FAILURE);
+        }
         
         // TODO: FREE ME PLEASE !!!
         _color = {new constant(0), new constant(0), new constant(0)};
+    }
+
+    clurtle_cpp::~clurtle_cpp() {
+        _file_out.close();
+        _file_header.close();
+        _file_footer.close();
     }
 
     void clurtle_cpp::visit_up(const up * u) {
@@ -186,6 +204,12 @@ namespace clurtle {
     void clurtle_cpp::visit_sequence(const sequence * s) {
         if (s->get_first() != nullptr) {
             s->get_first()->visit(*this);
+        }
+        // Add file footer
+        std::string line;
+        while (getline(_file_footer, line))
+        {
+            _file_out << line << '\n';
         }
     }
 
