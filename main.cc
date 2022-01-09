@@ -14,7 +14,7 @@ int main() {
     clurtle::sequence * s = NULL;
     int res = yyparse(&s);
     
-    #define DEBUG_L
+    // #define DEBUG_L
     #ifdef DEBUG_L
 
     clurtle::clurtle_cpp clurtle("out.cpp");  
@@ -27,7 +27,7 @@ int main() {
     #endif 
     #ifndef DEBUG_L
 
-    int sizeX = 500, sizeY = 500;
+    int sizeX = 1000, sizeY = 1000;
 
     clurtle::clurtle clurtle(sizeX, sizeY);
 
@@ -36,6 +36,7 @@ int main() {
     } else {
         std::cout << "res not found" << std::endl;
     }
+
 
     #endif 
 
