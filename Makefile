@@ -17,7 +17,6 @@ SRC=lex.yy.c parser.tab.cc \
 	clurtle_drawer/src/clurtle.cc \
 	main.cc
 
-
 SRCH=clurtle_drawer/include/affectation.hh \
 	clurtle_drawer/include/change_color.hh \
 	clurtle_drawer/include/color.hh \
@@ -44,6 +43,13 @@ SRCH=clurtle_drawer/include/affectation.hh \
 OBJ=$(SRC:.cc=.o)
 CXX=g++
 CXXFLAGS=-g -Wpedantic -Wall -Wextra -pthread -Iclurtle_drawer/include -Iclurtle_drawer/src -L/usr/include -lm -lfl 
+IN_FILE=exemples/quadrilataire.cl
+
+default: clurtle
+
+clurtle_cpp: clurtle $(IN_FILE) clurtle_cpp.header clurtle_cpp.footer
+	./clurtle < $(IN_FILE)
+	$(CXX) $@.cpp -o $@ -Iclurtle_drawer/include -L/usr/include -pthread -lX11
 
 clurtle: $(OBJ)
 	$(CXX) $(CXXFLAGS) -o $@ $(OBJ) -lX11
@@ -55,6 +61,6 @@ parser.tab.cc: parser.yy
 	bison -vd $<
 
 clean:
-	rm -fr $(OBJ) *~ lex.yy.c parser.tab.cc parser.tab.hh clurtle parser.output
+	rm -fr $(OBJ) *~ lex.yy.c parser.tab.cc parser.tab.hh clurtle parser.output *.png clurle_cpp.cpp 
 
 .PHONY: clean
