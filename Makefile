@@ -61,6 +61,6 @@ parser.tab.cc: parser.yy
 	bison -vd $<
 
 clean:
-	rm -fr $(OBJ) *~ lex.yy.c parser.tab.cc parser.tab.hh clurtle parser.output *.png clurle_cpp.cpp 
+	rm -fr $(OBJ) *~ lex.yy.c parser.tab.cc parser.tab.hh clurtle parser.output *.png *.bmp clurle_cpp.cpp clurtle_cpp
 
 .PHONY: clean

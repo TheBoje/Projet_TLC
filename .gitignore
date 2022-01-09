@@ -7,4 +7,5 @@ clurtle
 .vscode
 clurtle_cpp
 *.png
+*.bmp
 clurtle_cpp.cpp
