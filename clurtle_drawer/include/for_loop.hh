@@ -3,6 +3,7 @@
 
 #include <string>
 
+#include "variable.hh"
 #include "instr.hh"
 #include "expr.hh"
 #include "seq.hh"

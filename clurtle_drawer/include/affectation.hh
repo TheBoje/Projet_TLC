@@ -3,10 +3,13 @@
 
 #include <string>
 
+#include "variable.hh"
 #include "instr.hh"
 #include "expr.hh"
 
 namespace clurtle {
+
+
     class affectation : public instr {
         variable *   _var;
         expr *      _expr;

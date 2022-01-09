@@ -8,6 +8,8 @@ extern "C" int yylex();
 litteral -?[0-9]+
 variable [a-z]+([a-z]+|_)*
 
+%option nounput
+
 %%
 
 ###(.|\n)*###   { }

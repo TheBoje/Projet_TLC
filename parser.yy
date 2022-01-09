@@ -50,7 +50,6 @@ extern "C" void yyerror(clurtle::sequence ** res, const char* message);
     int yyparse(clurtle::sequence ** res);
 }
 
-
 %token DOWN UP CHANGECOL
 %token ROTATE FORWARD
 %token FOR TO ENDFOR WHILE ENDWHILE IF ELSE ENDIF DO FROM
@@ -149,4 +148,7 @@ line: instr ENDLINE { $$ = $1; }
 
 %%
 
-void yyerror(clurtle::sequence ** res, const char* message) { std::cerr << "ERREUR : " << message << std::endl; }
+void yyerror(clurtle::sequence ** res, const char* message) { 
+    std::cerr << "ERREUR : " << message << std::endl; 
+    (void)res; // Suppress unused parameter warning
+}
