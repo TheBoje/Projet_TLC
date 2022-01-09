@@ -5,3 +5,6 @@ parser.tab.*
 clurtle
 .idea
 .vscode
+clurtle_cpp
+*.png
+clurtle_cpp.cpp
