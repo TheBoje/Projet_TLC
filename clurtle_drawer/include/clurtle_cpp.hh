@@ -4,6 +4,7 @@
 #include <array>
 #include <iostream>
 #include <fstream>
+#include <vector>
 #include "visitor.hh"
 #include "expr.hh"
 
@@ -12,11 +13,7 @@ namespace clurtle {
         std::ofstream _file_out;
         std::ifstream _file_header;
         std::ifstream _file_footer;
-        bool          _pen_is_up;
-        std::array<expr *, 3>  _color;
-        int _pos_x;
-        int _pos_y;
-        int _rot;
+        std::vector<std::string> _initialized;
         int _indent;
         
     public:

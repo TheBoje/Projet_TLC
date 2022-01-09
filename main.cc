@@ -16,11 +16,11 @@ int main() {
     #define DEBUG_L
     #ifdef DEBUG_L
 
-    clurtle::clurtle_cpp clurtle("out.cpp");  
+    clurtle::clurtle_cpp clurtle("clurtle_cpp.cpp");  
     if (s != nullptr) {
         s->visit(clurtle);
     } else {
-        std::cout << "res not found" << std::endl;
+        return res;
     }
 
     #endif 
@@ -48,5 +48,5 @@ int main() {
     #endif 
 
     
-    return EXIT_SUCCESS;
+    return res;
 }

@@ -52,3 +52,24 @@ int main() {
     
     img = new cimg_library::CImg<unsigned char>(sizeX, sizeY, 1, 3);
     img->fill(255); // on remplit en blanc
+	is_up = false;
+	double distance = 150;
+	double angle = 123;
+	color[0] = 0;
+	color[1] = 0;
+	color[2] = 0;
+	for ( int x = 0; x < 100; x++) {
+		forward(distance);
+		curr_rot = std::fmod((angle + curr_rot ), 360);
+	}
+    img->save("clurtle_cpp_result.png");
+    cimg_library::CImgDisplay disp;
+    disp.display(*img);
+    while (!disp.is_closed()) 
+    {
+        // boucle des evenements
+        if (disp.key() == cimg_library::cimg::keyQ)
+        disp.close();
+        disp.wait();
+    }
+}

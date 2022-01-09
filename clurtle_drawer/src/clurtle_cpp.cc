@@ -4,6 +4,8 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <algorithm>
+
 
 
 #include "change_color.hh"
@@ -22,7 +24,7 @@
 #include "seq.hh"
 
 namespace clurtle {
-    clurtle_cpp::clurtle_cpp(std::string filename) : _pen_is_up(0), _pos_x(0), _pos_y(0), _rot(0), _indent(1), _file_out(filename), _file_header("clurtle_cpp.header"), _file_footer("clurtle_cpp.footer") {
+    clurtle_cpp::clurtle_cpp(std::string filename) :_file_out(filename), _file_header("clurtle_cpp.header"), _file_footer("clurtle_cpp.footer"), _indent(1) {
         try
         {
             if (!_file_header.is_open() || !_file_out.is_open() || !_file_footer.is_open()) {
@@ -40,9 +42,6 @@ namespace clurtle {
             std::cerr << e.what() << '\n';
             exit(EXIT_FAILURE);
         }
-        
-        // TODO: FREE ME PLEASE !!!
-        _color = {new constant(0), new constant(0), new constant(0)};
     }
 
     clurtle_cpp::~clurtle_cpp() {
@@ -52,153 +51,167 @@ namespace clurtle {
     }
 
     void clurtle_cpp::visit_up(const up * u) {
-        _pen_is_up = true;
-        std::cout << std::string(_indent, '\t') << "PEN_UP();" << std::endl;
+        _file_out << std::string(_indent, '\t') << "is_up = true;" << std::endl;
+        (void)u; // Suppress unused-parameter warning
     }
 
     void clurtle_cpp::visit_down(const down * d) {
-        _pen_is_up = false;
-        std::cout << std::string(_indent, '\t') << "PEN_DOWN();" << std::endl;
+        _file_out << std::string(_indent, '\t') << "is_up = false;" << std::endl;
+        (void)d; // Suppress unused-parameter warning
     }
 
     void clurtle_cpp::visit_change_color(const change_color * cc) {
-        std::cout << std::string(_indent, '\t') << "CHANGE_COLOR = ";
         cc->get_color()->visit(*this);
-        std::cout << ";" << std::endl; 
     }
 
     void clurtle_cpp::visit_color(const color * c) {
-        std::cout << "{";
+        // Au lieu de donner la couleur, on change la valeur de la 
+        // couleur actuelle (au lieu de le faire dans `visit_change_color`)
+        // car on utilise un tableau pour le stocker localement,
+        // il faudrait changer ca parce que si la syntaxe évolue, 
+        // (eg. RECTANGLE l w color), le code ne fonctionnera plus.
+        // Pour le moment, color est forcément un enfant de change_color,
+        // donc cela ne pose pas de problèmes.
+        // TODO(Louis): Fix me ! 
+        _file_out << std::string(_indent, '\t') << "color[0] = ";
         c->get_r()->visit(*this);
-        std::cout << ", ";
+        _file_out << ";" << std::endl << std::string(_indent, '\t') << "color[1] = ";
         c->get_g()->visit(*this);
-        std::cout << ", ";
+        _file_out << ";" << std::endl << std::string(_indent, '\t') << "color[2] = ";
         c->get_b()->visit(*this);
-        std::cout << "}";
+        _file_out << ";" << std::endl;
     }
 
 
     void clurtle_cpp::visit_forward(const forward * f) {
-        std::cout << std::string(_indent, '\t') << "FORWARD(";
+        _file_out << std::string(_indent, '\t') << "forward(";
         f->get_amount()->visit(*this);
-        std::cout << ");" << std::endl;
+        _file_out << ");" << std::endl;
     }
 
     void clurtle_cpp::visit_rotate(const rotate * r) {
-        std::cout << std::string(_indent, '\t') << "ROTATE(";
+        _file_out << std::string(_indent, '\t') << "curr_rot = std::fmod((";
         r->get_amount()->visit(*this);
-        std::cout << ");" << std::endl;
+        _file_out << " + curr_rot ), 360);" << std::endl;
     }
 
     void clurtle_cpp::visit_line(const line * l) {
-        std::cout << std::string(_indent, '\t') << "LINE(";
+        _file_out << std::string(_indent, '\t') << "line(";
         l->get_length()->visit(*this);
-        std::cout << ");" << std::endl;
+        _file_out << ");" << std::endl;
     }
 
     void clurtle_cpp::visit_rectangle(const rectangle * r) {
-        std::cout << std::string(_indent, '\t') << "RECTANGLE(";
+        _file_out << std::string(_indent, '\t') << "rectangle(";
         r->get_length()->visit(*this);
-        std::cout << ", ";
-        r->get_width()->visit(*this);
-        std::cout << ");" << std::endl;
+        _file_out << ", ";
+        r->get_width()->visit(*this);        
+        _file_out << ");" << std::endl;
     }
 
     void clurtle_cpp::visit_conditional(const conditional * c) {
-        std::cout << std::string(_indent, '\t') << "IF (";
+        _file_out << std::string(_indent, '\t') << "if (";
         c->get_cond()->visit(*this);
-        std::cout << ") {" << std::endl;
+        _file_out << ") {" << std::endl;
         c->get_cons()->visit(*this);
-        std::cout << std::string(_indent, '\t') << "}";
+        _file_out << std::string(_indent, '\t') << "}";
         if (c->get_alt() != nullptr) {
-            std::cout << "ELSE {" << std::endl;
+            _file_out << "else {" << std::endl;
             c->get_alt()->visit(*this);
-            std::cout << "}";
+            _file_out << "}";
         }
-        std::cout << std::endl;
+        _file_out << std::endl;
     }
 
     void clurtle_cpp::visit_while_loop(const while_loop * wl) {
-        std::cout << std::string(_indent, '\t') << "WHILE (";
+        _file_out << std::string(_indent, '\t') << "while (";
         _indent++;
         wl->get_cond()->visit(*this);
-        std::cout << ") {" << std::endl;;
+        _file_out << ") {" << std::endl;;
         wl->get_body()->visit(*this);
         _indent--;
-        std::cout << std::string(_indent, '\t') << "}" << std::endl;
+        _file_out << std::string(_indent, '\t') << "}" << std::endl;
     }
 
     void clurtle_cpp::visit_for_loop(const for_loop * fl) {
-        std::cout << std::string(_indent, '\t') << "FOR ( let " << fl->get_var()->get_name() << " = ";
+        _file_out << std::string(_indent, '\t') << "for ( int " << fl->get_var()->get_name() << " = ";
         fl->get_from()->visit(*this);
-        std::cout << "; " << fl->get_var()->get_name() << " < ";
+        _file_out << "; " << fl->get_var()->get_name() << " < ";
         fl->get_to()->visit(*this);
-        std::cout << ") {" << std::endl;
+        _file_out << "; " << fl->get_var()->get_name() << "++) {" << std::endl;
         _indent++;
         fl->get_body()->visit(*this);
         _indent--;
-        std::cout << std::string(_indent, '\t') << "}" << std::endl;
+        _file_out << std::string(_indent, '\t') << "}" << std::endl;
     }
 
     void clurtle_cpp::visit_ope(const ope * o) {
+        _file_out << "(";
         o->get_left()->visit(*this);
+        _file_out << ")";
         switch (o->get_symbol())
         {
         case OP_PLUS:
-            std::cout << "+";
+            _file_out << "+";
             break;
         case OP_MINUS:
-            std::cout << "-";
+            _file_out << "-";
             break;
         case OP_TIMES:
-            std::cout << "*";
+            _file_out << "*";
             break;
         case OP_GT:
-            std::cout << ">";
+            _file_out << ">";
             break;
         case OP_GEQ:
-            std::cout << ">=";
+            _file_out << ">=";
             break;
         case OP_LT:
-            std::cout << "<";
+            _file_out << "<";
             break;
         case OP_LEQ:
-            std::cout << "<=";
+            _file_out << "<=";
             break;
         case OP_EQ:
-            std::cout << "==";
+            _file_out << "==";
             break;
         case OP_AND:
-            std::cout << "&&";
+            _file_out << "&&";
             break;
         case OP_OR:
-            std::cout << "||";
+            _file_out << "||";
             break;
         case OP_NOT:
-            std::cout << "!";
+            _file_out << "!";
             break;
         default:
             throw std::runtime_error("unknown operator exception");
             break;
         }
+        _file_out << "(";
         o->get_right()->visit(*this);
+        _file_out << ")";
     }
 
     void clurtle_cpp::visit_constant(const constant * c) {
-        std::cout << c->get_value();
+        _file_out << c->get_value();
     }
 
     void clurtle_cpp::visit_variable(const variable * v) {
-        std::cout << v->get_name();
+        _file_out << v->get_name();
     }
 
     void clurtle_cpp::visit_affectation(const affectation * a) {
-        // if a->var->get_name() not exists ? -> initialisation -> prefix "int"
-        std::cout << std::string(_indent, '\t') << "int ";
+        _file_out << std::string(_indent, '\t');
+        if (std::find(_initialized.begin(), _initialized.end(), a->get_var()->get_name()) == _initialized.end()) {
+            // if la variable n'est pas dans _initialized aka n'est initialisée
+            _file_out << "double ";
+            _initialized.push_back(a->get_var()->get_name());
+        }
         a->get_var()->visit(*this);
-        std::cout << " = ";
+        _file_out << " = ";
         a->get_expr()->visit(*this);
-        std::cout << ";" << std::endl;
+        _file_out << ";" << std::endl;
     }
 
     void clurtle_cpp::visit_sequence(const sequence * s) {
