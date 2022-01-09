@@ -42,8 +42,7 @@ SRCH=clurtle_drawer/include/affectation.hh \
 	clurtle_drawer/include/clurtle.hh
 OBJ=$(SRC:.cc=.o)
 CXX=g++
-CXXFLAGS=-g -Wpedantic -Wall -Wextra -pthread -Iclurtle_drawer/include -Iclurtle_drawer/src -lm -lpthread -lfl
-
+CXXFLAGS=-g -Wpedantic -Wall -Wextra -pthread -Iclurtle_drawer/include -Iclurtle_drawer/src -L/usr/include -lm -lfl 
 IN_FILE=exemples/quadrilataire.cl
 
 default: clurtle

@@ -1,3 +1,4 @@
+#include <X11/Xlib.h>
 #include <iostream>
 #include "parser.tab.hh"
 #include "clurtle_drawer/include/expr.hh"
@@ -25,12 +26,10 @@ int main() {
 
     #endif 
     #ifndef DEBUG_L
-    int sizeX = 320, sizeY = 240;
-    cimg_library::CImg<unsigned char> img(sizeX, sizeY, 1, 3);
 
-    clurtle::clurtle clurtle(img);
+    int sizeX = 500, sizeY = 500;
 
-    cimg_library::CImgDisplay disp;
+    clurtle::clurtle clurtle(sizeX, sizeY);
 
     if (s != nullptr) {
         s->visit(clurtle);
@@ -38,13 +37,6 @@ int main() {
         std::cout << "res not found" << std::endl;
     }
 
-    while (!disp.is_closed()) 
-    {
-        // boucle des evenements
-        if (disp.key() == cimg_library::cimg::keyQ)
-        disp.close();
-        disp.wait();
-    }
     #endif 
 
     

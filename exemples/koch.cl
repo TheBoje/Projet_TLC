@@ -1,5 +1,6 @@
 BAISSER;
-taille <- 50;
+taille <- 100;
+
 
 POUR x DE 0 ALLANT_A 3 FAIRE
     AVANCER taille;
