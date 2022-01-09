@@ -52,18 +52,6 @@ void clurtle::clurtle::visit_down(const down * d) {
 
 void clurtle::clurtle::visit_change_color(const change_color * cc) {
     cc->get_color()->visit(*this);
-    cc->get_color()->visit(*this);
-    cc->get_color()->visit(*this);
-
-    unsigned char b = get_last_int();
-    unsigned char g = get_last_int();
-    unsigned char r = get_last_int();
-
-    std::cout << (int)r << " " << (int)g << " " << (int)b << std::endl;
-
-    _color[0] = r;
-    _color[1] = g;
-    _color[2] = b;
 }
 
 void clurtle::clurtle::visit_color(const color * c) {
@@ -75,9 +63,9 @@ void clurtle::clurtle::visit_color(const color * c) {
     char g = get_last_int();
     char b = get_last_int();
 
-    _color[0] = r;
+    _color[2] = r;
     _color[1] = g;
-    _color[2] = b;
+    _color[0] = b;
 }
 
 void clurtle::clurtle::visit_forward(const forward * f) {
