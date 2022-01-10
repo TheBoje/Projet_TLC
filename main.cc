@@ -19,7 +19,12 @@ int main() {
 
     clurtle::clurtle_cpp clurtle("clurtle_cpp.cpp");  
     if (s != nullptr) {
-        s->visit(clurtle);
+        try {
+            s->visit(clurtle);
+        } catch (std::runtime_error* re) {
+            std::cout << re->what() << std::endl;
+            return EXIT_FAILURE;
+        }
     } else {
         return res;
     }

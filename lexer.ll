@@ -67,9 +67,9 @@ CYAN            { return CYAN; }
 "<"             { return LT; }
 "<="            { return LEQ; }
 "="             { return EQ; }
-"&&"            { return AND; }
-"||"            { return OR; }
-"!"             { return NOT; }
+ET              { return AND; }
+OU              { return OR; }
+NON             { return NOT; }
 
 [ \n\t]         {}
 

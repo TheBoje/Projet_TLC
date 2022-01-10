@@ -14,6 +14,7 @@ namespace clurtle {
         std::ifstream _file_header;
         std::ifstream _file_footer;
         std::vector<std::string> _initialized;
+        std::vector<std::string> _dont_use;
         int _indent;
         
     public:

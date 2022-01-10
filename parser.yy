@@ -1,3 +1,8 @@
+/* Authors :
+    - Vincent COMMIN
+    - Louis LEENART
+*/
+
 %{
 #include <iostream>
 #include <string>
@@ -5,11 +10,10 @@ extern "C" int yylex();
 
 #include "clurtle_drawer/include/seq.hh"
 extern "C" void yyerror(clurtle::sequence ** res, const char* message);
-
 %}
 
+
 %code requires {
-    // https://stackoverflow.com/questions/34418381/how-to-reference-lex-or-parse-parameters-in-flex-rules
     #include "clurtle_drawer/include/affectation.hh"
     #include "clurtle_drawer/include/change_color.hh"
     #include "clurtle_drawer/include/color.hh"
@@ -30,7 +34,6 @@ extern "C" void yyerror(clurtle::sequence ** res, const char* message);
     #include "clurtle_drawer/include/while_loop.hh"
 
     using namespace clurtle;
-
 }
 
 %union {
@@ -43,6 +46,9 @@ extern "C" void yyerror(clurtle::sequence ** res, const char* message);
     clurtle::sequence * sequence;
 }
 
+/* imply that yyparse function take a sequence** arg in which it'll write the result
+    yyerror needs to have a sequence** as arguement.
+*/
 %parse-param { clurtle::sequence ** res }
 
 
@@ -73,6 +79,11 @@ extern "C" void yyerror(clurtle::sequence ** res, const char* message);
 %type<instruction> affectation conditional for_loop while_loop instr control_struct line
 %type<expression> expr cond
 
+
+/*  
+For a better understanding for the syntax, you can look at the README.md file and at example files
+in the `exemples` directory. 
+*/
 %%
 
 prog: seq { *res = new sequence($1); } 
@@ -94,8 +105,8 @@ color: BLACK     { $$ = new color(new constant(  0), new constant(  0), new cons
 ;
 
 
-expr: CONSTANT      { $$ = new constant(yylval.cst); }
-| VARIABLE          { $$ = new variable($1); }
+expr: CONSTANT      { $$ = new constant($1); }
+| VARIABLE          { variable * v = new variable($1); free($1); $$ = v; }
 | expr PLUS expr    { $$ = new ope(OP_PLUS, $1, $3); }
 | expr TIMES expr   { $$ = new ope(OP_TIMES, $1, $3); }
 | expr MINUS expr   { $$ = new ope(OP_MINUS, $1, $3); }
@@ -113,14 +124,14 @@ cond: expr GT expr  { $$ = new ope(OP_GT, $1, $3); }
 | NOT cond          { $$ = new ope(OP_NOT, $2, nullptr); }
 ;
 
-affectation: VARIABLE AFFECT expr { $$ = new affectation(new variable($1), $3); }
+affectation: VARIABLE AFFECT expr { affectation * a = new affectation(new variable($1), $3); free($1); $$ = a; }
 ;
 
 conditional: IF cond DO seq ENDIF { $$ = new conditional($2, $4); }
 | IF cond DO seq ELSE DO seq ENDIF { $$ = new conditional($2, $4, $7); }
 ;
 
-for_loop: FOR VARIABLE FROM expr TO expr DO seq ENDFOR { $$ = new for_loop(new variable($2), $4,$6, $8); }
+for_loop: FOR VARIABLE FROM expr TO expr DO seq ENDFOR { for_loop * fl = new for_loop(new variable($2), $4,$6, $8); free($2); $$ = fl; }
 ;
 
 while_loop: WHILE cond DO seq ENDWHILE { $$ = new while_loop($2, $4); }
@@ -144,7 +155,6 @@ instr: DOWN             { $$ = new down(); }
 
 line: instr ENDLINE { $$ = $1; }
 ;
-
 
 %%
 

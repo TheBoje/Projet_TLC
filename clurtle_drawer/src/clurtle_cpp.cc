@@ -132,7 +132,12 @@ namespace clurtle {
     }
 
     void clurtle_cpp::visit_for_loop(const for_loop * fl) {
-        _file_out << std::string(_indent, '\t') << "for ( int " << fl->get_var()->get_name() << " = ";
+        if (std::find(_initialized.begin(), _initialized.end(), fl->get_var()->get_name()) != _initialized.end()) {
+            // si la variable est dans _initialized
+            throw new std::runtime_error("La variable " + fl->get_var()->get_name() + " existe déjà.");
+        }
+        _dont_use.push_back(fl->get_var()->get_name());
+        _file_out << std::string(_indent, '\t') << "for ( double " << fl->get_var()->get_name() << " = ";
         fl->get_from()->visit(*this);
         _file_out << "; " << fl->get_var()->get_name() << " < ";
         fl->get_to()->visit(*this);
@@ -141,6 +146,9 @@ namespace clurtle {
         fl->get_body()->visit(*this);
         _indent--;
         _file_out << std::string(_indent, '\t') << "}" << std::endl;
+        // Remove fl.var.name from _dont_use and _initialized
+        _dont_use.erase(std::remove(_dont_use.begin(), _dont_use.end(), fl->get_var()->get_name()), _dont_use.end());
+        _initialized.erase(std::remove(_initialized.begin(), _initialized.end(), fl->get_var()->get_name()), _initialized.end());
     }
 
     void clurtle_cpp::visit_ope(const ope * o) {
@@ -149,42 +157,45 @@ namespace clurtle {
         _file_out << ")";
         switch (o->get_symbol())
         {
-        case OP_PLUS:
-            _file_out << "+";
-            break;
-        case OP_MINUS:
-            _file_out << "-";
-            break;
-        case OP_TIMES:
-            _file_out << "*";
-            break;
-        case OP_GT:
-            _file_out << ">";
-            break;
-        case OP_GEQ:
-            _file_out << ">=";
-            break;
-        case OP_LT:
-            _file_out << "<";
-            break;
-        case OP_LEQ:
-            _file_out << "<=";
-            break;
-        case OP_EQ:
-            _file_out << "==";
-            break;
-        case OP_AND:
-            _file_out << "&&";
-            break;
-        case OP_OR:
-            _file_out << "||";
-            break;
-        case OP_NOT:
-            _file_out << "!";
-            break;
-        default:
-            throw std::runtime_error("unknown operator exception");
-            break;
+            case OP_PLUS:
+                _file_out << "+";
+                break;
+            case OP_MINUS:
+                _file_out << "-";
+                break;
+            case OP_TIMES:
+                _file_out << "*";
+                break;
+            case OP_DIVIDE:
+                _file_out << "/";
+                break;
+            case OP_GT:
+                _file_out << ">";
+                break;
+            case OP_GEQ:
+                _file_out << ">=";
+                break;
+            case OP_LT:
+                _file_out << "<";
+                break;
+            case OP_LEQ:
+                _file_out << "<=";
+                break;
+            case OP_EQ:
+                _file_out << "==";
+                break;
+            case OP_AND:
+                _file_out << "&&";
+                break;
+            case OP_OR:
+                _file_out << "||";
+                break;
+            case OP_NOT:
+                _file_out << "!";
+                break;
+            default:
+                throw std::runtime_error("unknown operator exception");
+                break;
         }
         _file_out << "(";
         o->get_right()->visit(*this);
@@ -200,9 +211,14 @@ namespace clurtle {
     }
 
     void clurtle_cpp::visit_affectation(const affectation * a) {
+        if (std::find(_dont_use.begin(), _dont_use.end(), a->get_var()->get_name()) != _dont_use.end()) {
+            // si la variable est dans _dont_use
+            throw new std::runtime_error("La variable " + a->get_var()->get_name() + " ne peux pas être affectée dans une boucle FOR.");
+        }
+
         _file_out << std::string(_indent, '\t');
         if (std::find(_initialized.begin(), _initialized.end(), a->get_var()->get_name()) == _initialized.end()) {
-            // if la variable n'est pas dans _initialized aka n'est initialisée
+            // si la variable n'est pas dans _initialized aka n'est initialisée
             _file_out << "double ";
             _initialized.push_back(a->get_var()->get_name());
         }
