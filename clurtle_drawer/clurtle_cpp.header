@@ -3,8 +3,8 @@
 
 #include "CImg.h"
 
-double curr_x = 200;
-double curr_y = 200;
+double curr_x = 300;
+double curr_y = 300;
 double curr_rot = 0;
 bool is_up = false;
 int color[3] = {0, 0, 0};
@@ -48,7 +48,7 @@ void forward(double length) {
 }
 
 int main() {
-    int sizeX = 400, sizeY = 400;
+    int sizeX = 1000, sizeY = 1000;
     
     img = new cimg_library::CImg<unsigned char>(sizeX, sizeY, 1, 3);
     img->fill(255); // on remplit en blanc

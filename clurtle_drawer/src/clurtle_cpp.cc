@@ -6,8 +6,6 @@
 #include <string>
 #include <algorithm>
 
-
-
 #include "change_color.hh"
 #include "forward.hh"
 #include "rotate.hh"
@@ -24,7 +22,7 @@
 #include "seq.hh"
 
 namespace clurtle {
-    clurtle_cpp::clurtle_cpp(std::string filename) :_file_out(filename), _file_header("clurtle_cpp.header"), _file_footer("clurtle_cpp.footer"), _indent(1) {
+    clurtle_cpp::clurtle_cpp(std::string filename) :_file_out(filename), _file_header("clurtle_drawer/clurtle_cpp.header"), _file_footer("clurtle_drawer/clurtle_cpp.footer"), _indent(1) {
         try
         {
             if (!_file_header.is_open() || !_file_out.is_open() || !_file_footer.is_open()) {

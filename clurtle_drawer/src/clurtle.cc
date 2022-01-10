@@ -21,7 +21,7 @@
 
 clurtle::clurtle::clurtle(int sizex, int sizey) : 
     _pen_is_up(true), 
-    _color({0, 0, 0}),
+    _color{0, 0, 0},
     _pos({sizex / 2, sizey / 2}),
     _rotation(0),
     _img(cimg_library::CImg<unsigned char>(sizex, sizey, 1, 3))
@@ -44,10 +44,12 @@ clurtle::clurtle::~clurtle() {
 
 void clurtle::clurtle::visit_up(const up * u) {
     _pen_is_up = true;
+    (void)u; // Suppress unused-parameter warning
 }
 
 void clurtle::clurtle::visit_down(const down * d) {
     _pen_is_up = false;
+    (void)d; // Suppress unused-parameter warning
 }
 
 void clurtle::clurtle::visit_change_color(const change_color * cc) {
@@ -183,7 +185,7 @@ void clurtle::clurtle::visit_ope(const ope * o) {
             break;
         }
     }
-    else if(ope == OP_AND || ope == OP_OR && sb_size >= 2)
+    else if((ope == OP_AND || ope == OP_OR) && sb_size >= 2)
     {
         bool a = _stack_bool[sb_size - 1];
         bool b = _stack_bool[sb_size - 2];
