@@ -6,6 +6,5 @@ clurtle
 .idea
 .vscode
 clurtle_cpp
-*.png
-*.bmp
+toto.bmp
 clurtle_cpp.cpp

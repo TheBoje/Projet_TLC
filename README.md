@@ -133,6 +133,15 @@ CHANGER COULEUR (2 * x) x 255; # violet-ish
 
 ## Exemples de code
 
+Des exemples de codes sont dans `exemples/`. Voici quelques résultats obtenus, aussi bien avec `CLurtle` que `CLurtle_cpp` : 
+
+|              Nom du fichier |              Résultat               |
+| --------------------------: | :---------------------------------: |
+| `exemples/quadrilataire.cl` | ![](exemples/quadrilataire_res.png) |
+|   `exemples/quadrillage.cl` |  ![](exemples/quadrillage_res.png)  |
+|          `exemples/koch.cl` |     ![](exemples/koch_res.png)      |
+|        `exemples/etoile.cl` |    ![](exemples/etoile_res.png)     |
+
 # Utilisation
 
 ## CLurtle
