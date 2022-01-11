@@ -12,17 +12,23 @@
 
 namespace clurtle {
     class clurtle : public visitor {
-        bool                        _pen_is_up;
-        unsigned char               _color[3];
-        std::array<int, 2>          _pos;
-        int                         _rotation;
-        std::vector<int>            _stack;
-        std::vector<bool>           _stack_bool;
-        std::map<std::string, int>  _variables;
-        cimg_library::CImg<unsigned char> _img;
+        bool                                _pen_is_up;
+        unsigned char                       _color[3];
+        std::array<double, 2>               _pos;
+        double                              _rotation;
 
-        inline int get_last_int() { 
-            int a = _stack[_stack.size() - 1]; 
+        // Piles d'appelles des valeurs lors du parcours de l'arbre par le visiteur.
+        // Ainsi, la valeur (double ou bool) en tête de pile est la dernière calculée.  
+        std::vector<double>                 _stack;
+        std::vector<bool>                   _stack_bool;
+        std::map<std::string, double>       _variables;
+        std::map<std::string, double>       _it_variables;
+        cimg_library::CImg<unsigned char>   _img;
+
+        // get_last_double et get_last_bool nous permettent de récupérer 
+        // la valeur en tête de pile tout en la retirant après accès.
+        inline double get_last_double() { 
+            double a = _stack[_stack.size() - 1]; 
             _stack.pop_back(); 
             return a;
         }
