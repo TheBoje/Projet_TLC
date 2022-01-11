@@ -3,42 +3,42 @@
 
 #include "CImg.h"
 
-int curr_x = 300;
-int curr_y = 300;
-int curr_rot = 0;
+double curr_x = 300;
+double curr_y = 300;
+double curr_rot = 0;
 bool is_up = false;
 int color[3] = {0, 0, 0};
 cimg_library::CImg<unsigned char> *img;
 
-void rectangle(int length, int width) {
+void rectangle(double length, double width) {
     if (!is_up){
         for(int _i = 0; _i < 4; _i++) 
         {
-            int x = curr_x + (_i % 2 == 0 ? length : width) * cos(curr_rot * (M_PI / 180));
-            int y = curr_y + (_i % 2 == 0 ? length : width) * sin(curr_rot * (M_PI / 180));
+            double x = curr_x + (_i % 2 == 0 ? length : width) * cos(curr_rot * (M_PI / 180));
+            double y = curr_y + (_i % 2 == 0 ? length : width) * sin(curr_rot * (M_PI / 180));
             
             img->draw_line(curr_x, curr_y, x, y, color);
 
-            curr_x = (int)x;
-            curr_y = (int)y;
+            curr_x = x;
+            curr_y = y;
 
             curr_rot = std::fmod((curr_rot + 90), 360);
         }
     }
 }
 
-void line(int length) {
+void line(double length) {
     if(!is_up) {
-        int x = curr_x + length * cos(curr_rot * (M_PI / 180));
-        int y = curr_y + length * sin(curr_rot * (M_PI / 180));
+        double x = curr_x + length * cos(curr_rot * (M_PI / 180));
+        double y = curr_y + length * sin(curr_rot * (M_PI / 180));
         img->draw_line(curr_x, curr_y, x, y, color);
     }
 }
 
 
-void forward(int length) {
-    int e x = curr_x + length * cos(curr_rot * (M_PI / 180));
-    int y = curr_y + length * sin(curr_rot * (M_PI / 180));
+void forward(double length) {
+    double x = curr_x + length * cos(curr_rot * (M_PI / 180));
+    double y = curr_y + length * sin(curr_rot * (M_PI / 180));
 
     if(!is_up)
         img->draw_line(curr_x, curr_y, x, y, color);

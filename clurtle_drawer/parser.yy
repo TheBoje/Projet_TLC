@@ -8,30 +8,30 @@
 #include <string>
 extern "C" int yylex();
 
-#include "clurtle_drawer/include/seq.hh"
+#include "seq.hh"
 extern "C" void yyerror(clurtle::sequence ** res, const char* message);
 %}
 
 
 %code requires {
-    #include "clurtle_drawer/include/affectation.hh"
-    #include "clurtle_drawer/include/change_color.hh"
-    #include "clurtle_drawer/include/color.hh"
-    #include "clurtle_drawer/include/conditional.hh"
-    #include "clurtle_drawer/include/constant.hh"
-    #include "clurtle_drawer/include/down.hh"
-    #include "clurtle_drawer/include/expr.hh"
-    #include "clurtle_drawer/include/for_loop.hh"
-    #include "clurtle_drawer/include/forward.hh"
-    #include "clurtle_drawer/include/instr.hh"
-    #include "clurtle_drawer/include/line.hh"
-    #include "clurtle_drawer/include/ope.hh"
-    #include "clurtle_drawer/include/rectangle.hh"
-    #include "clurtle_drawer/include/rotate.hh"
-    #include "clurtle_drawer/include/term.hh"
-    #include "clurtle_drawer/include/up.hh"
-    #include "clurtle_drawer/include/variable.hh"
-    #include "clurtle_drawer/include/while_loop.hh"
+    #include "affectation.hh"
+    #include "change_color.hh"
+    #include "color.hh"
+    #include "conditional.hh"
+    #include "constant.hh"
+    #include "down.hh"
+    #include "expr.hh"
+    #include "for_loop.hh"
+    #include "forward.hh"
+    #include "instr.hh"
+    #include "line.hh"
+    #include "ope.hh"
+    #include "rectangle.hh"
+    #include "rotate.hh"
+    #include "term.hh"
+    #include "up.hh"
+    #include "variable.hh"
+    #include "while_loop.hh"
 
     using namespace clurtle;
 }

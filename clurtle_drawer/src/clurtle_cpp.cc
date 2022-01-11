@@ -22,7 +22,7 @@
 #include "seq.hh"
 
 namespace clurtle {
-    clurtle_cpp::clurtle_cpp(std::string filename) :_file_out(filename), _file_header("clurtle_drawer/clurtle_cpp.header"), _file_footer("clurtle_drawer/clurtle_cpp.footer"), _indent(1) {
+    clurtle_cpp::clurtle_cpp(std::string filename) : _filename(filename), _file_out(filename + ".cpp"), _file_header("clurtle_drawer/clurtle_cpp.header"), _file_footer("clurtle_drawer/clurtle_cpp.footer"), _indent(1) {
         try
         {
             // Si les fichiers ne sont pas présent / autre problème, -> exception 
@@ -97,9 +97,9 @@ namespace clurtle {
 
     // La rotation de la tortue est contenu dans la variable globale `curr_rot` du fichier résultat. 
     void clurtle_cpp::visit_rotate(const rotate * r) {
-        _file_out << std::string(_indent, '\t') << "curr_rot = (";
+        _file_out << std::string(_indent, '\t') << "curr_rot = std::fmod(";
         r->get_amount()->visit(*this);
-        _file_out << " + curr_rot) % 360;" << std::endl;
+        _file_out << " + curr_rot, 360);" << std::endl;
     }
 
     // Appelle la fonction line(int lenght) définie dans `clurtle_cpp.header`. 
@@ -258,6 +258,7 @@ namespace clurtle {
         if (s->get_first() != nullptr) {
             s->get_first()->visit(*this);
         }
+        _file_out << "\timg->save(\"" << _filename << ".png\");";
         // Ajoute à la fin de `_file_out` le contenu de `_file_footer`
         std::string line;
         while (getline(_file_footer, line))

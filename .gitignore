@@ -1,10 +1,3 @@
-lex.yy.c
-*.o
-parser.output
-parser.tab.*
-clurtle
 .idea
 .vscode
-clurtle_cpp
-toto.bmp
-clurtle_cpp.cpp
+build

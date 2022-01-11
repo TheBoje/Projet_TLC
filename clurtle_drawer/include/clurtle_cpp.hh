@@ -39,6 +39,7 @@ namespace clurtle {
      * de compilation, et le résultat est plus stable.
     */
     class clurtle_cpp : public visitor {
+        std::string   _filename;    // Nom du ficher cible (sans extension)
         std::ofstream _file_out;    // Résultat de la compilation
         std::ifstream _file_header; // Header à écrire au début de `_file_out`
         std::ifstream _file_footer; // Footer à écrire à la fin de `_file_out`

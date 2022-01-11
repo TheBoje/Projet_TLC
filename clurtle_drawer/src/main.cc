@@ -1,23 +1,28 @@
 #include <X11/Xlib.h>
 #include <iostream>
 #include "parser.tab.hh"
-#include "clurtle_drawer/include/expr.hh"
+#include "expr.hh"
 #include "clurtle.hh"
 #include "clurtle_cpp.hh"
 
 #include "CImg.h"
 
-// extern "C" int yyparse(Context* context);
+int yyparse(clurtle::sequence**);
 
 
-int main() {
+int main(int argc, char * argv[]) {
     clurtle::sequence * s = NULL;
     int res = yyparse(&s);
     
     #define DEBUG_L
     #ifdef DEBUG_L
-
-    clurtle::clurtle_cpp clurtle("clurtle_cpp.cpp");  
+    std::string out_name;
+    if (argc >= 2) {
+        out_name = argv[1];
+    } else {
+        out_name = "result";
+    }
+    clurtle::clurtle_cpp clurtle(out_name);  
     if (s != nullptr) {
         try {
             s->visit(clurtle);

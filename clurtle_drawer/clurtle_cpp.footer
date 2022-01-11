@@ -1,4 +1,3 @@
-    img->save("clurtle_cpp_result.png");
     cimg_library::CImgDisplay disp;
     disp.display(*img);
     while (!disp.is_closed()) 
