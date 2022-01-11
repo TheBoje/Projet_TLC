@@ -49,13 +49,15 @@ La vérification d'affectation sur les variables d'itération est interdite, et 
 
 ## Exercice 4
 
-Suite à la première itération de développement, nous avons remarqué quelques points d'amélioration :
+Suite à la première itération de développement, nous avons remarqué quelques points d'amélioration (certains implémentés, d'autres non) :
 - Spécification de la valeur initiale de la boucle POUR (initialement `POUR var ALLANT_A expr FAIRE`), mis à jour.
 - Ajout de l'opérateur unaire `-`. Ne demande pas de changement majeur dans le code mais pas encore implémenté (on utilise `x * -1` pour le moment si on veut inverser le signe)
 - Création de fonction. Demande un changement notable dans notre structure, surtout au niveau des différents visiteurs.
 - Boucle `POUR` ne va que dans le sens positif (c'est à dire `POUR x DE i ALLANT_A j`, cela correspond forcément à `x < j; x++`). Demande une revue de la syntaxe de la boucle `POUR`, compliquant surement la syntaxe. 
 - Ajout d'un printer pour afficher la valeur d'une expression dans la console. Ne demande pas de changement majeur dans le code.
 - Ajout de la forme de dessin `CERCLE %rayon%;`, dont l'ajout serait sans difficultés.
+- Utiliser `float` pour la position au lieu de `int` afin de limiter les imprecisions de calcul. Nous aurions pu modifier la syntaxe du code CLurtle, mais avons décidé de seulement modifier la manière d'exploiter l'arbre syntaxique créé (qui utilise des floats pour la position et non pas des ints).
+- Ajout de commande pour l'initialisation (taille de l'image, nom de l'image et de la fenêtre, etc). 
 
 ## Exercice 5
 
