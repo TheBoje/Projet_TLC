@@ -12,8 +12,8 @@ int yyparse(clurtle::sequence**);
 
 void clurtle_usage() {
     std::cout << "clurtle take 0, 1 are 3 args" << std::endl;
-    std::cout << "0 : the file will be named \"result.bmp\" and the resolution (1928x1024)" << std::endl;
-    std::cout << "1 : the file will be named \"$1.bmp\" and the resolution (1928x1024)" << std::endl;
+    std::cout << "0 : the file will be named \"result.bmp\" and the resolution (1920x1080)" << std::endl;
+    std::cout << "1 : the file will be named \"$1.bmp\" and the resolution (1920x1080)" << std::endl;
     std::cout << "3 : the file will be named \"$1.bmp\" and the resolution ($2x$3)" << std::endl;
     std::cout << "./clurtle {imgname} {sizex} {sizey} < {clurtlefile}.cl" << std::endl;
 }
@@ -46,7 +46,7 @@ int main(int argc, char * argv[]) {
     #ifndef DEBUG_L
 
     std::string img_name = "result";
-    int sizeX = 1928, sizeY = 1024;
+    int sizeX = 1920, sizeY = 1080;
 
     if(argc == 2) 
     {
