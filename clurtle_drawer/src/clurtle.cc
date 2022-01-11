@@ -26,11 +26,12 @@
  * @param sizex 
  * @param sizey 
  */
-clurtle::clurtle::clurtle(int sizex, int sizey) : 
+clurtle::clurtle::clurtle(int sizex, int sizey, std::string img_name) : 
     _pen_is_up(true), 
     _color{0, 0, 0},
     _pos({(double)(sizex / 2), (double)(sizey / 2)}),
     _rotation(0.),
+    _img_name(img_name),
     _img(cimg_library::CImg<unsigned char>(sizex, sizey, 1, 3))
 {
     _img.fill(255);
@@ -45,9 +46,8 @@ clurtle::clurtle::~clurtle() {
     cimg_library::CImgDisplay disp;
     disp.display(_img);
 
-
-    _img.save_bmp("toto.bmp");
-
+    _img_name += ".bmp";
+    _img.save_bmp(_img_name.c_str());
 
     while (!disp.is_closed()) 
     {

@@ -16,6 +16,7 @@ namespace clurtle {
         unsigned char                       _color[3];
         std::array<double, 2>               _pos;
         double                              _rotation;
+        std::string                         _img_name;
 
         // Piles d'appelles des valeurs lors du parcours de l'arbre par le visiteur.
         // Ainsi, la valeur (double ou bool) en tête de pile est la dernière calculée.  
@@ -40,7 +41,7 @@ namespace clurtle {
         }
 
     public:
-        clurtle(int sizex, int sizey);
+        clurtle(int sizex, int sizey, std::string img_name = "out");
         ~clurtle();
 
         void visit_up(const up * u);

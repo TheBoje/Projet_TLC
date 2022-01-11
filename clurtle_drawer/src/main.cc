@@ -10,11 +10,19 @@
 int yyparse(clurtle::sequence**);
 
 
+void clurtle_usage() {
+    std::cout << "clurtle take 0, 1 are 3 args" << std::endl;
+    std::cout << "0 : the file will be named \"result.bmp\" and the resolution (1928x1024)" << std::endl;
+    std::cout << "1 : the file will be named \"$1.bmp\" and the resolution (1928x1024)" << std::endl;
+    std::cout << "3 : the file will be named \"$1.bmp\" and the resolution ($2x$3)" << std::endl;
+    std::cout << "./clurtle {imgname} {sizex} {sizey} < {clurtlefile}.cl" << std::endl;
+}
+
 int main(int argc, char * argv[]) {
     clurtle::sequence * s = NULL;
     int res = yyparse(&s);
     
-    #define DEBUG_L
+    //#define DEBUG_L
     #ifdef DEBUG_L
     std::string out_name;
     if (argc >= 2) {
@@ -37,9 +45,26 @@ int main(int argc, char * argv[]) {
     #endif 
     #ifndef DEBUG_L
 
-    int sizeX = 1000, sizeY = 1000;
+    std::string img_name = "result";
+    int sizeX = 1928, sizeY = 1024;
 
-    clurtle::clurtle clurtle(sizeX, sizeY);
+    if(argc == 2) 
+    {
+        img_name = argv[1];
+    }
+    else if(argc == 4) 
+    {
+        sizeX = atoi(argv[2]);
+        sizeY = atoi(argv[3]);
+    }
+    else if(argc != 1)
+    {
+        std::cout << argc << std::endl;
+        clurtle_usage();
+        return EXIT_FAILURE;
+    }
+    
+    clurtle::clurtle clurtle(sizeX, sizeY, img_name);
 
     if (s != nullptr) {
         s->visit(clurtle);
