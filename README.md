@@ -20,7 +20,7 @@ Note : nous avons réalisé une extension pour l'éditeur Visual Studio Code qui
 (Ctrl+P)
 ext install theboje.clurtle-syntax-highlighting
 ```
-
+ou bien en cherchant `clurtle` dans les extensions.
 # Exercices réalisés 
 
 ## Exercice 1
@@ -63,8 +63,7 @@ Suite à la première itération de développement, nous avons remarqué quelque
 
 Nous avons décidé de réaliser deux approches différents pour l'exploitation de l'arbre syntaxique créé - toutes deux bassées sur la mécanique du visiteur évidemment.
 
-La première, `clurtle.cc` 
-<!-- TODO Vincent -->
+La première, `clurtle.cc`, exécute une commande de la bibliothèque `CImg` à chaque visite d'actions tel que le dessins d'une ligne, d'un rectangle ou bien d'avancer avec le crayon baissé. A chaque visite d'un changement de couleur, position ou rotation, nous le changeons dans les attributs de la clurtle.
 
 La seconde, `clurtle_cpp.cc` se contente de transformer le code `.cl` en `.cpp` avec un minimum de modifications.
 
