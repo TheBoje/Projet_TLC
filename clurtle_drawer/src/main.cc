@@ -22,8 +22,7 @@ int main(int argc, char * argv[]) {
     clurtle::sequence * s = NULL;
     int res = yyparse(&s);
     
-    //#define DEBUG_L
-    #ifdef DEBUG_L
+    #ifdef CLURTLE_CPP
     std::string out_name;
     if (argc >= 2) {
         out_name = argv[1];
@@ -43,7 +42,7 @@ int main(int argc, char * argv[]) {
     }
 
     #endif 
-    #ifndef DEBUG_L
+    #ifndef CLURTLE_CPP
 
     std::string img_name = "result";
     int sizeX = 1920, sizeY = 1080;

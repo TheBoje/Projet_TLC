@@ -1,7 +1,7 @@
 OUT_DIR=build
 CXX=g++
 SRC_DIR=clurtle_drawer/src
-CXXFLAGS=-g -Wpedantic -Wall -Wextra -pthread -I${OUT_DIR} -I${SRC_DIR} -Iclurtle_drawer/include -lm -lfl
+CXXFLAGS=-g -Wpedantic -Wall -Wextra -pthread -I${OUT_DIR} -I${SRC_DIR} -Iclurtle_drawer/include -lm -lfl 
 IN_FILE=exemples/quadrilatere.cl
 
 SRC=${wildcard ${SRC_DIR}/*.cc}
@@ -11,12 +11,15 @@ OBJ_B=${patsubst %, build/%, ${notdir ${OBJ}}}
 
 default: clurtle
 
-clurtle_cpp: clurtle ${IN_FILE} clurtle_drawer/clurtle_cpp.header clurtle_drawer/clurtle_cpp.footer
-	${OUT_DIR}/$< ${OUT_DIR}/${basename ${notdir ${IN_FILE}}} < ${IN_FILE}
+clurtle_cpp: clurtle_cpp_flags clurtle ${IN_FILE} clurtle_drawer/clurtle_cpp.header clurtle_drawer/clurtle_cpp.footer
+	${OUT_DIR}/clurtle ${OUT_DIR}/${basename ${notdir ${IN_FILE}}} < ${IN_FILE}
 	${CXX} ${OUT_DIR}/${basename ${notdir ${IN_FILE}}}.cpp -o ${OUT_DIR}/${basename ${notdir ${IN_FILE}}} -Iclurtle_drawer/include -pthread -lX11
 
 clurtle: ${OBJ} lex.yy.c ${OUT_DIR}/parser.tab.o
 	${CXX} -o ${OUT_DIR}/$@ ${CXXFLAGS} ${OUT_DIR}/lex.yy.c ${OUT_DIR}/parser.tab.o ${OBJ_B} -lX11
+
+clurtle_cpp_flags:
+	$(eval CXXFLAGS += -DCLURTLE_CPP)
 
 mkdir:
 	@mkdir -p ${OUT_DIR}

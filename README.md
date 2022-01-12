@@ -148,17 +148,33 @@ Des exemples de codes sont dans `exemples/`. Voici quelques résultats obtenus, 
 ## CLurtle
 
 Pour utiliser `clurtle`, il faut compiler le projet en utilisant la commande 
-> make clurtle
+
+```bash
+$ make clurtle
+```
 
 puis pour le lancer : 
 
->build/clurtle {img_name} {sizex} {sizey} < {path_to_cl_file}
+```bash
+$ build/clurtle {img_name} {sizex} {sizey} < {path_to_cl_file}
+```
 
 Arguments : 
 - `img_name : chaine de caractères` (facultatif) : nom de l'image qui sera sauvegardé après avoir quitté le programme.
 - `sizex : entier` et `sizey : entier` (facultatif) : ce sont les dimensions de l'image.
 
 Il est à noter que l'on peut lancer `clurtle` sans aucuns de ces arguments, le nom de l'image sera alors `result.bmp` et la taille sera `(1920x1080)`. Si l'on souhaite changer le nom, nous pouvons le faire sans changer les dimensions, /!\ ceci n'est pas réciproque. Si l'on veut changer les dimensions, il faut définir le nom de l'image avant. De plus, on ne peux pas changer une seule dimension.
+
+Par exemple, l'utilisation est la suivante : 
+
+```bash
+$ pwd
+# doit afficher /chemin/vers/Projet_TLC
+$ make clurtle
+# logs de compilation
+$ build/clurtle mon_result 1000 1000 < /path/vers/mon/fichier.cl
+# mon_result.bmp se trouve à la racine
+```
 
 ## CLurtle_cpp
 
