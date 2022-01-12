@@ -66,7 +66,12 @@ int main(int argc, char * argv[]) {
     clurtle::clurtle clurtle(sizeX, sizeY, img_name);
 
     if (s != nullptr) {
-        s->visit(clurtle);
+        try {
+            s->visit(clurtle);
+        } catch (std::runtime_error * re) { 
+            std::cerr << re->what() << std::endl;
+            return EXIT_FAILURE; 
+        }
     } else {
         std::cout << "res not found" << std::endl;
     }

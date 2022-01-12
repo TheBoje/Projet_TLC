@@ -8,16 +8,16 @@ Composition du groupe :
 
 Dans le cadre de l'UE Théorie des Langages et Compilation, nous avons créé le langage `CLurtle`, avec `.cl` comment extension (pour **C**ommin-**L**eenart-T**urtle**) ayant pour cible un langage avec une syntaxe accessible au novices pour la manipulation d'une tortue de dessin. La liste des opérations disponibles est la suivante :
 - Baisser/Lever le crayon
-- Deplacer la tortue (position et rotation)
+- Déplacer la tortue (position et rotation)
 - Dessiner des formes basiques (line et rectangle)
 - Changer la couleur du crayon
 - Utiliser des variables (uniquement entières) et effectuer des opérations basiques
 - Utiliser des structures de contrôle (for, while, if/then, if/then/else)
 
-Note : nous avons réalisé une extension pour l'éditeur Visual Studio Code qui supporte la syntaxe de notre langage ainsi que quelques snippets, disponible ici : [CLurtle-syntax-highlighting](https://marketplace.visualstudio.com/items?itemName=TheBoJe.clurtle-syntax-highlighting), ou via la commande suivante : 
+Note : nous avons réalisé une extension pour l'éditeur Visual Studio Code qui ajoute la coloration syntaxique de notre langage ainsi que quelques snippets, disponible ici : [CLurtle-syntax-highlighting](https://marketplace.visualstudio.com/items?itemName=TheBoJe.clurtle-syntax-highlighting), ou via la commande suivante : 
 
-```
-(Ctrl+P)
+```bash
+# (Ctrl+P)
 ext install theboje.clurtle-syntax-highlighting
 ```
 ou bien en cherchant `clurtle` dans les extensions.
@@ -56,7 +56,7 @@ Suite à la première itération de développement, nous avons remarqué quelque
 - Boucle `POUR` ne va que dans le sens positif (c'est à dire `POUR x DE i ALLANT_A j`, cela correspond forcément à `x < j; x++`). Demande une revue de la syntaxe de la boucle `POUR`, compliquant sûrement la syntaxe. 
 - Ajout d'un printer pour afficher la valeur d'une expression dans la console. Ne demande pas de changement majeur dans le code.
 - Ajout de la forme de dessin `CERCLE %rayon%;`, dont l'ajout serait sans difficultés.
-- Utiliser `float` pour la position au lieu de `int` afin de limiter les imprecisions de calcul. Nous aurions pu modifier la syntaxe du code CLurtle, mais avons décidé de seulement modifier la manière d'exploiter l'arbre syntaxique créé (qui utilise des floats pour la position et non pas des ints).
+- Utiliser `float` pour la position au lieu de `int` afin de limiter les imprecisions de calcul. Nous aurions pu modifier la syntaxe du code CLurtle, mais avons décidé de seulement modifier la manière d'exploiter l'arbre syntaxique créé (qui utilise des floats pour la position et non pas des entiers).
 - Ajout de commande pour l'initialisation (taille de l'image, nom de l'image et de la fenêtre, etc). 
 
 ## Exercice 5
@@ -145,6 +145,12 @@ Des exemples de codes sont dans `exemples/`. Voici quelques résultats obtenus, 
 
 # Utilisation
 
+Les commandes données pour l'utilisation de notre projet ont pour cible un système UNIX (testé uniquement sur Linux). La compatibilité avec un système Windows n'est pas assurée.
+
+L'ensemble des fichiers compilés se trouvent dans le dossier `build`.
+
+On note aussi que le `Makefile` donné n'est parfait et force la recompilation de tout le projet à chaque commande même lorsqu'il n'y a pas de modifications. 
+
 ## CLurtle
 
 Pour utiliser `clurtle`, il faut compiler le projet en utilisant la commande 
@@ -156,12 +162,12 @@ $ make clurtle
 puis pour le lancer : 
 
 ```bash
-$ build/clurtle {img_name} {sizex} {sizey} < {path_to_cl_file}
+$ build/clurtle {img_name} {size_x} {size_y} < {path_to_cl_file}
 ```
 
 Arguments : 
-- `img_name : chaine de caractères` (facultatif) : nom de l'image qui sera sauvegardé après avoir quitté le programme.
-- `sizex : entier` et `sizey : entier` (facultatif) : ce sont les dimensions de l'image.
+- `img_name : chaîne de caractères` (facultatif) : nom de l'image qui sera sauvegardé après avoir quitté le programme.
+- `size_x : entier` et `size_y : entier` (facultatif) : ce sont les dimensions de l'image.
 
 Il est à noter que l'on peut lancer `clurtle` sans aucuns de ces arguments, le nom de l'image sera alors `result.bmp` et la taille sera `(1920x1080)`. Si l'on souhaite changer le nom, nous pouvons le faire sans changer les dimensions, /!\ ceci n'est pas réciproque. Si l'on veut changer les dimensions, il faut définir le nom de l'image avant. De plus, on ne peux pas changer une seule dimension.
 
@@ -169,15 +175,40 @@ Par exemple, l'utilisation est la suivante :
 
 ```bash
 $ pwd
-# doit afficher /chemin/vers/Projet_TLC
+# doit afficher "le/chemin/vers/Projet_TLC"
 $ make clurtle
 # logs de compilation
-$ build/clurtle mon_result 1000 1000 < /path/vers/mon/fichier.cl
-# mon_result.bmp se trouve à la racine
+$ build/clurtle mon_etoile 1000 1000 < exemples/etoile.cl
+# mon_etoile.bmp se trouve à la racine
 ```
 
 ## CLurtle_cpp
 
-### Problème connu
+Pour utiliser `clurtle_cpp`, il faut compiler le projet en spécifiant le fichier source : 
 
-- Visibilité des variable non prise en compte dans .cl alors que pris en compte en CPP, ca plante à la compilation de cpp -> bin
+```bash
+$ make clurtle_cpp IN_FILE=/chemin/vers/le/fichier/source.cl
+```
+
+Cette commande va compiler le projet, puis compile le fichier source .cl vers un .cpp, et va compiler le .cpp.
+
+Puis pour lancer : 
+
+```bash
+$ build/{nom_fichier_source}
+``` 
+
+Le résultat est alors ajouté dans `build/{nom_fichier_source}.png`.
+
+Par exemple, l'utilisation est la suivante : 
+
+```bash
+$ pwd
+# doit afficher "le/chemin/vers/Projet_TLC"
+$ make clurtle_cpp IN_FILE=exemples/etoile.cl
+# logs de compilation
+$ build/etoile
+# affiche la fenêtre, et créé build/etoile.png à la fermeture de la fenêtre
+```
+
+À noter qu'un problème est déjà connu pour `clurtle_cpp` : la visibilité des variable déclarées dans un bloc en .cl (par exemple dans une boucle POUR, ou dans un SI) ne résulte pas en une erreur de compilation de .cl -> .cpp, alors que de .cpp -> bin (par `g++`) la compilation est un échec. Les modifications nécessaires pour résoudre le problème n'ont pas (encore) été appliquées.

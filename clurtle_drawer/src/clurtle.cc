@@ -394,6 +394,7 @@ void clurtle::clurtle::visit_affectation(const affectation * a) {
     try
     {
         _it_variables.at(var_name);
+        throw new std::runtime_error("La variable " + var_name + " ne peux pas être affectée dans une boucle FOR.");
     }
     catch(const std::out_of_range& e)
     {
