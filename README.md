@@ -27,7 +27,7 @@ ou bien en cherchant `clurtle` dans les extensions.
 
 Le fichiers concernés sont :
 - `lexer.ll`
-- `exemples/quadrilataire.cl`
+- `exemples/quadrilatere.cl`
 - `exemples/quadrillage.cl`
 
 ## Exercice 2
@@ -45,7 +45,7 @@ Les fichiers concernés sont :
 
 Tous les fichiers de ce dossier (sauf `clurtle.cc/hh`,`clurtle_cpp.cc/hh`, `visitor.hh` et `CImg.h`) représentent les différents objets qui composent notre arbre syntaxique. Plus précisément, tous les objets implémentent `term.hh`. L'arbre est construit dans `parser.yy -> dans yyparse(clurtle::sequence **)`. Voir [Utilisation](#Utilisation) et `main.cc` pour plus de détails concernant la récupération de l'arbre syntaxique.
 
-La vérification d'affectation sur les variables d'itération est interdite, et est testable via le fichier `exemples/affectation_pour.cl` (une erreur est attentue à la compilation).
+La vérification d'affectation sur les variables d'itération est interdite, et est testable via le fichier `exemples/affectation_pour.cl` (une erreur est attendue à la compilation).
 
 ## Exercice 4
 
@@ -53,7 +53,7 @@ Suite à la première itération de développement, nous avons remarqué quelque
 - Spécification de la valeur initiale de la boucle POUR (initialement `POUR var ALLANT_A expr FAIRE`), mis à jour.
 - Ajout de l'opérateur unaire `-`. Ne demande pas de changement majeur dans le code mais pas encore implémenté (on utilise `x * -1` pour le moment si on veut inverser le signe)
 - Création de fonction. Demande un changement notable dans notre structure, surtout au niveau des différents visiteurs.
-- Boucle `POUR` ne va que dans le sens positif (c'est à dire `POUR x DE i ALLANT_A j`, cela correspond forcément à `x < j; x++`). Demande une revue de la syntaxe de la boucle `POUR`, compliquant surement la syntaxe. 
+- Boucle `POUR` ne va que dans le sens positif (c'est à dire `POUR x DE i ALLANT_A j`, cela correspond forcément à `x < j; x++`). Demande une revue de la syntaxe de la boucle `POUR`, compliquant sûrement la syntaxe. 
 - Ajout d'un printer pour afficher la valeur d'une expression dans la console. Ne demande pas de changement majeur dans le code.
 - Ajout de la forme de dessin `CERCLE %rayon%;`, dont l'ajout serait sans difficultés.
 - Utiliser `float` pour la position au lieu de `int` afin de limiter les imprecisions de calcul. Nous aurions pu modifier la syntaxe du code CLurtle, mais avons décidé de seulement modifier la manière d'exploiter l'arbre syntaxique créé (qui utilise des floats pour la position et non pas des ints).
@@ -61,7 +61,7 @@ Suite à la première itération de développement, nous avons remarqué quelque
 
 ## Exercice 5
 
-Nous avons décidé de réaliser deux approches différents pour l'exploitation de l'arbre syntaxique créé - toutes deux bassées sur la mécanique du visiteur évidemment.
+Nous avons décidé de réaliser deux approches différents pour l'exploitation de l'arbre syntaxique créé - toutes deux basées sur la mécanique du visiteur évidemment.
 
 La première, `clurtle.cc`, exécute une commande de la bibliothèque `CImg` à chaque visite d'actions tel que le dessins d'une ligne, d'un rectangle ou bien d'avancer avec le crayon baissé. A chaque visite d'un changement de couleur, position ou rotation, nous le changeons dans les attributs de la clurtle.
 
@@ -138,7 +138,7 @@ Des exemples de codes sont dans `exemples/`. Voici quelques résultats obtenus, 
 
 |              Nom du fichier |              Résultat               |
 | --------------------------: | :---------------------------------: |
-| `exemples/quadrilataire.cl` | ![](exemples/quadrilataire_res.png) |
+| `exemples/quadrilatere.cl` | ![](exemples/quadrilatere_res.png) |
 |   `exemples/quadrillage.cl` |  ![](exemples/quadrillage_res.png)  |
 |          `exemples/koch.cl` |     ![](exemples/koch_res.png)      |
 |        `exemples/etoile.cl` |    ![](exemples/etoile_res.png)     |
